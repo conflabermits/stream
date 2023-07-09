@@ -6,7 +6,7 @@
   <script>
     $(document).ready(function() {
       // Define the URL of the site you want to monitor for updates
-      var targetSiteURL = 'https://www.example.com';
+      var targetSiteURL = 'https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj';
 
       // Function to check for updates
       function checkForUpdates() {
@@ -16,7 +16,7 @@
           cache: false,
           success: function(data) {
             // Update the contents of your web page here with the data from the target site
-            var updatedContent = $(data).find('#target-element').html();
+            var updatedContent = $(data).find('#panel-1').html();
             $('#content').html(updatedContent);
           }
         });
@@ -25,8 +25,8 @@
       // Run the checkForUpdates function initially
       checkForUpdates();
 
-      // Set an interval to periodically check for updates (e.g., every 5 seconds)
-      setInterval(checkForUpdates, 5000);
+      // Set an interval to periodically check for updates (e.g., every 60 seconds)
+      setInterval(checkForUpdates, 60000);
     });
   </script>
   <style>
