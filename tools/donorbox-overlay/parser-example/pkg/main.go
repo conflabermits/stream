@@ -12,6 +12,7 @@ import (
 func main() {
 	// Send an HTTP GET request to the example.com web page
 	resp, err := http.Get("https://www.chrisdunaj.com")
+	//resp, err := http.Get("https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj")
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
@@ -24,6 +25,16 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
+
+	/* Attrs from bs4
+	progress = str(soup.find(attrs={"id": "panel-1"}).contents[1])
+	num_donators = soup.find(attrs={"id": "paid-count"}).text
+		#'0'
+	total_raised = soup.find(attrs={"id": "total-raised"}).text
+		#'$0'
+	raise_goal = soup.find(attrs={"id": "panel-1"}).contents[1].find_all(attrs={"class": "bold"})[2].text
+		#'$500'
+	*/
 
 	// Find and print all links on the web page
 	var links []string
