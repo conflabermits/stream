@@ -27,13 +27,13 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 		<head>
 			<meta charset="UTF-8">
 			<title>Auto-Reloading Web Page</title>
-            <style type="text/css">
-                .body { width: auto; }
-                div.main {
-                    font-size: 64px;
-                    color: yellowgreen;
-                }
-            </style>
+			<style type="text/css">
+				.body { width: auto; }
+				div.main {
+				font-size: 64px;
+				color: yellowgreen;
+			}
+			</style>
 			<script>
 				function reloadPage() {
 					location.reload();
@@ -43,9 +43,9 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 		</head>
 		<body>
 			<h1>Hello, this is an auto-reloading web page!</h1>
-            <div class="main">
-                <p>Random integer: ` + fmt.Sprint(rand.Int()) + `</p>
-            </div>
+			<div class="main">
+				<p>Random integer: ` + fmt.Sprint(rand.Int()) + `</p>
+			</div>
 		</body>
 		</html>
 	`

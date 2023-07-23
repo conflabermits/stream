@@ -6,12 +6,14 @@ import (
 	"fmt"
 	"net/http"
 
+	//"regexp"
+
 	"golang.org/x/net/html"
 )
 
 func main() {
 	// Send an HTTP GET request to the example.com web page
-	resp, err := http.Get("https://www.chrisdunaj.com")
+	resp, err := http.Get("http://localhost:8080/")
 	//resp, err := http.Get("https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj")
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -38,6 +40,7 @@ func main() {
 
 	// Find and print all links on the web page
 	var links []string
+	var panels []string
 	var link func(*html.Node)
 	link = func(n *html.Node) {
 		if n.Type == html.ElementNode && n.Data == "a" {
@@ -49,6 +52,15 @@ func main() {
 			}
 		}
 
+		/* 		if n.Type == html.ElementNode && regexp.MatchString("^\$\d{1,}", n.Data) {
+			for _, div := range n.Attr {
+				if div.Key == "description" {
+					// adds a new link entry when the attribute matches
+					panels = append(panels, div.Val)
+				}
+			}
+		} */
+
 		// traverses the HTML of the webpage from the first child node
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
 			link(c)
@@ -59,5 +71,9 @@ func main() {
 	// loops through the links slice
 	for _, l := range links {
 		fmt.Println("Link:", l)
+	}
+	// loops through the panels slice
+	for _, p := range panels {
+		fmt.Println("Panel:", p)
 	}
 }
