@@ -43,7 +43,7 @@ func main() {
 	//var panels []string
 	//var dollarValues []string
 	var totalRaised float64
-	//var paidCount int
+	var paidCount string
 	//var raiseGoal int
 	var link func(*html.Node)
 	link = func(n *html.Node) {
@@ -79,6 +79,19 @@ func main() {
 			} */
 		}
 
+		numMatch, _ := regexp.MatchString("^\\d{1,}", n.Data)
+		if n.Data != "" && n.Type == html.TextNode && numMatch {
+			for i := range (n.Parent).Attr {
+				if (n.Parent).Attr[i].Val == "paid-count" {
+					//dollarValues = append(dollarValues, n.Data)
+					//fmt.Println("Total raised:", n.Data)
+					// Formatting the string to remove the dollar sign (https://www.makeuseof.com/go-formatting-numbers-currencies/)
+					paidCount = n.Data
+					//fmt.Println("Total raised:", totalRaised)
+				}
+			}
+		}
+
 		// traverses the HTML of the webpage from the first child node
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
 			link(c)
@@ -98,5 +111,6 @@ func main() {
 	/* for _, d := range dollarValues {
 		fmt.Println("Dollar values:", d)
 	} */
+	fmt.Println("Number of contributors:", paidCount)
 	fmt.Println("Total raised: $", totalRaised)
 }
