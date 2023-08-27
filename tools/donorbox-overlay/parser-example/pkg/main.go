@@ -12,9 +12,10 @@ import (
 )
 
 func main() {
-	// Send an HTTP GET request to the example.com web page
-	resp, err := http.Get("http://localhost:8080/")
-	//resp, err := http.Get("https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj")
+	//targetUrl := "http://localhost:8080/" // For local testing
+	targetUrl := "https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj" // For live testing
+	fmt.Println("Fetching URL:", targetUrl)
+	resp, err := http.Get(targetUrl)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
@@ -39,7 +40,7 @@ func main() {
 	*/
 
 	// Find and print all links on the web page
-	var links []string
+	//var links []string
 	//var panels []string
 	//var dollarValues []string
 	var totalRaised float64
@@ -47,14 +48,14 @@ func main() {
 	var raiseGoal float64
 	var link func(*html.Node)
 	link = func(n *html.Node) {
-		if n.Type == html.ElementNode && n.Data == "a" {
+		/* if n.Type == html.ElementNode && n.Data == "a" {
 			for _, a := range n.Attr {
 				if a.Key == "href" {
 					// adds a new link entry when the attribute matches
 					links = append(links, a.Val)
 				}
 			}
-		}
+		} */
 
 		dollarMatch, _ := regexp.MatchString("^\\$\\d{1,}", n.Data)
 
@@ -107,9 +108,9 @@ func main() {
 	link(doc)
 
 	// loops through the links slice
-	for _, l := range links {
+	/* for _, l := range links {
 		fmt.Println("Link:", l)
-	}
+	} */
 	// loops through the panels slice
 	/* for _, p := range panels {
 		fmt.Println("Panel:", p)
