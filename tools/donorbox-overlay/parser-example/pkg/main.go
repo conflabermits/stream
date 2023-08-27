@@ -44,7 +44,7 @@ func main() {
 	//var dollarValues []string
 	var totalRaised float64
 	var paidCount string
-	//var raiseGoal int
+	var raiseGoal float64
 	var link func(*html.Node)
 	link = func(n *html.Node) {
 		if n.Type == html.ElementNode && n.Data == "a" {
@@ -65,6 +65,13 @@ func main() {
 					//fmt.Println("Total raised:", n.Data)
 					// Formatting the string to remove the dollar sign (https://www.makeuseof.com/go-formatting-numbers-currencies/)
 					totalRaised, err = strconv.ParseFloat(n.Data[1:], 64)
+					if err != nil {
+						fmt.Println("Error:", err)
+					}
+					//fmt.Println("Total raised:", totalRaised)
+				}
+				if (n.Parent).Attr[i].Val == "bold" {
+					raiseGoal, err = strconv.ParseFloat(n.Data[1:], 64)
 					if err != nil {
 						fmt.Println("Error:", err)
 					}
@@ -113,4 +120,5 @@ func main() {
 	} */
 	fmt.Println("Number of contributors:", paidCount)
 	fmt.Println("Total raised: $", totalRaised)
+	fmt.Println("Raise goal: $", raiseGoal)
 }
