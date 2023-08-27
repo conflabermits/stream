@@ -63,6 +63,7 @@ func main() {
 				if (n.Parent).Attr[i].Val == "total-raised" {
 					//dollarValues = append(dollarValues, n.Data)
 					//fmt.Println("Total raised:", n.Data)
+					// Formatting the string to remove the dollar sign (https://www.makeuseof.com/go-formatting-numbers-currencies/)
 					totalRaised, err = strconv.ParseFloat(n.Data[1:], 64)
 					if err != nil {
 						fmt.Println("Error:", err)
