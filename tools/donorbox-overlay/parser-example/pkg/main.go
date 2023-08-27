@@ -5,8 +5,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-
-	//"regexp"
+	"regexp"
+	"strconv"
 
 	"golang.org/x/net/html"
 )
@@ -40,7 +40,11 @@ func main() {
 
 	// Find and print all links on the web page
 	var links []string
-	var panels []string
+	//var panels []string
+	//var dollarValues []string
+	var totalRaised float64
+	//var paidCount int
+	//var raiseGoal int
 	var link func(*html.Node)
 	link = func(n *html.Node) {
 		if n.Type == html.ElementNode && n.Data == "a" {
@@ -52,14 +56,27 @@ func main() {
 			}
 		}
 
-		/* 		if n.Type == html.ElementNode && regexp.MatchString("^\$\d{1,}", n.Data) {
-			for _, div := range n.Attr {
+		dollarMatch, _ := regexp.MatchString("^\\$\\d{1,}", n.Data)
+
+		if dollarMatch { //n.Type == html.ElementNode && regexpMatch {
+			for i := range (n.Parent).Attr {
+				if (n.Parent).Attr[i].Val == "total-raised" {
+					//dollarValues = append(dollarValues, n.Data)
+					//fmt.Println("Total raised:", n.Data)
+					totalRaised, err = strconv.ParseFloat(n.Data[1:], 64)
+					if err != nil {
+						fmt.Println("Error:", err)
+					}
+					//fmt.Println("Total raised:", totalRaised)
+				}
+			}
+			/* for _, div := range n.Attr {
 				if div.Key == "description" {
 					// adds a new link entry when the attribute matches
 					panels = append(panels, div.Val)
 				}
-			}
-		} */
+			} */
+		}
 
 		// traverses the HTML of the webpage from the first child node
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
@@ -73,7 +90,12 @@ func main() {
 		fmt.Println("Link:", l)
 	}
 	// loops through the panels slice
-	for _, p := range panels {
+	/* for _, p := range panels {
 		fmt.Println("Panel:", p)
-	}
+	} */
+	// loops through the dollarValues slice
+	/* for _, d := range dollarValues {
+		fmt.Println("Dollar values:", d)
+	} */
+	fmt.Println("Total raised: $", totalRaised)
 }
