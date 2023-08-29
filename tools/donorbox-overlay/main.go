@@ -28,11 +28,13 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 			<meta charset="UTF-8">
 			<title>Auto-Reloading Web Page</title>
 			<style type="text/css">
-				.body { width: auto; }
+				.body {
+					width: auto;
+				}
 				div.main {
-				font-size: 64px;
-				color: yellowgreen;
-			}
+					font-size: 64px;
+					color: yellowgreen;
+				}
 			</style>
 			<script>
 				function reloadPage() {
