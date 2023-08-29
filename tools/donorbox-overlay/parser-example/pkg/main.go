@@ -12,14 +12,17 @@ import (
 )
 
 func main() {
+
 	//targetUrl := "http://localhost:8080/" // For local testing
 	targetUrl := "https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj" // For live testing
+
 	fmt.Println("Fetching URL:", targetUrl)
 	resp, err := http.Get(targetUrl)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
+
 	defer resp.Body.Close()
 
 	// Use the html package to parse the response body from the request
@@ -36,6 +39,7 @@ func main() {
 	var raiseGoal float64
 	var link func(*html.Node)
 	link = func(n *html.Node) {
+
 		/* if n.Type == html.ElementNode && n.Data == "a" {
 			for _, a := range n.Attr {
 				if a.Key == "href" {
@@ -66,6 +70,7 @@ func main() {
 		}
 
 		numMatch, _ := regexp.MatchString("^\\d{1,}", n.Data)
+
 		if n.Data != "" && n.Type == html.TextNode && numMatch {
 			for i := range (n.Parent).Attr {
 				if (n.Parent).Attr[i].Val == "paid-count" {
@@ -79,6 +84,7 @@ func main() {
 			link(c)
 		}
 	}
+
 	link(doc)
 
 	// loops through the links slice
