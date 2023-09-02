@@ -12,7 +12,6 @@ import (
 
 /*
 TO DO:
-* Add function for checking current donorbox values
 * Turn HTML content into a template
 * Give the HTML template some inputs for changing reload interval, maybe other things
 * Give the HTML template a button to save changes and reload with new values
@@ -36,6 +35,10 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 					width: auto;
 				}
 				div.main {
+					font-size: 48px;
+					color: yellowgreen;
+				}
+				h1 {
 					font-size: 64px;
 					color: yellowgreen;
 				}
@@ -44,13 +47,13 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 				function reloadPage() {
 					location.reload();
 				}
-				setTimeout(reloadPage, 15000); // Reload every N milliseconds
+				setTimeout(reloadPage, 61000); // Reload every N milliseconds
 			</script>
 		</head>
 		<body>
-			<h1>Hello, this is an auto-reloading web page!</h1>
+			<h1>Donorbox progress:</h1>
 			<div class="main">
-				<p>Random integer: ` + getDonorboxProgress() + `</p>
+				<p>` + getDonorboxProgress() + `</p>
 			</div>
 		</body>
 		</html>
@@ -62,8 +65,8 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 
 func getDonorboxProgress() string {
 
-	targetUrl := "http://localhost:8080/" // For local testing
-	//targetUrl := "https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj" // For live testing
+	//targetUrl := "http://localhost:8080/" // For local testing
+	targetUrl := "https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj" // For live testing
 
 	fmt.Println("Fetching URL:", targetUrl)
 	resp, err := http.Get(targetUrl)
@@ -140,10 +143,10 @@ func getDonorboxProgress() string {
 	/* for _, l := range links {
 		fmt.Println("Link:", l)
 	} */
-	fmt.Println("Number of contributors:", paidCount)
-	fmt.Println("Total raised: $", totalRaised)
-	fmt.Println("Raise goal: $", raiseGoal)
+	fmt.Println("  Number of contributors:", paidCount)
+	fmt.Println("  Total raised: $", totalRaised)
+	fmt.Println("  Raise goal: $", raiseGoal)
 
-	return fmt.Sprintf("Number of contributors: %s\nTotal raised: $%g\nRaise goal: $%g", paidCount, totalRaised, raiseGoal)
+	return fmt.Sprintf("Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g", paidCount, totalRaised, raiseGoal)
 
 }
