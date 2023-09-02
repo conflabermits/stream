@@ -99,5 +99,6 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 	`
 
 	w.Header().Set("Content-Type", "text/html")
+	fmt.Println("Served page")
 	fmt.Fprint(w, htmlContent)
 }
