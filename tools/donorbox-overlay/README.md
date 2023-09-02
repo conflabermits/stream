@@ -25,6 +25,10 @@ Total raised: $ 53.03
 Raise goal: $ 500
 ```
 
+It's been integrated into the HTML web server so the page reload now calls the function and returns HTML-formatted text of the current fundraiser data.
+
+Argument parsing has also been added to make it easier to specify the target URL to check and the local port to run the web server.
+
 ## Next Steps
 
-Now that the HTML scraper/parser is written in Go, it should be easier to call it from the HTML web server. Tying these two things together would be the next functional step forward. Once they're successfully working together I can focus on cleaning up the HTML, adding logging and arg parsing, and writing some tests.
+I should focus on cleaning up the HTML, adding logging, and writing some tests.

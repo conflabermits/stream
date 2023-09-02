@@ -1,9 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	//"math/rand"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
 
@@ -17,10 +18,36 @@ TO DO:
 * Give the HTML template a button to save changes and reload with new values
 */
 
+type Options struct {
+	Url  string
+	Port string
+}
+
+var targetUrl string
+
+func parseArgs() (*Options, error) {
+	options := &Options{}
+	flag.StringVar(&options.Url, "url", "http://localhost:8080", "Donorbox URL to check")
+	flag.StringVar(&options.Port, "port", "38080", "Port to run the local web server")
+	flag.Usage = func() {
+		fmt.Printf("Usage: <app> [options]\n\n")
+		flag.PrintDefaults()
+	}
+	flag.Parse()
+
+	targetUrl = options.Url
+	return options, nil
+}
+
 func main() {
+	options, err := parseArgs()
+	if err != nil {
+		os.Exit(1)
+	}
 	http.HandleFunc("/", serveHTML)
-	fmt.Println("Server listening on port 38080")
-	http.ListenAndServe(":38080", nil)
+	fmt.Printf("Server starting on http://localhost:" + options.Port + "\n")
+	fmt.Printf("Server checking URL: " + options.Url + "\n")
+	http.ListenAndServe(":"+options.Port, nil)
 }
 
 func serveHTML(w http.ResponseWriter, r *http.Request) {
@@ -64,9 +91,8 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDonorboxProgress() string {
-
 	//targetUrl := "http://localhost:8080/" // For local testing
-	targetUrl := "https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj" // For live testing
+	//targetUrl := "https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj" // For live testing
 
 	fmt.Println("Fetching URL:", targetUrl)
 	resp, err := http.Get(targetUrl)
@@ -144,8 +170,8 @@ func getDonorboxProgress() string {
 		fmt.Println("Link:", l)
 	} */
 	fmt.Println("  Number of contributors:", paidCount)
-	fmt.Println("  Total raised: $", totalRaised)
-	fmt.Println("  Raise goal: $", raiseGoal)
+	fmt.Printf("  Total raised: $%g\n", totalRaised)
+	fmt.Printf("  Raise goal: $%g\n", raiseGoal)
 
 	return fmt.Sprintf("Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g", paidCount, totalRaised, raiseGoal)
 
