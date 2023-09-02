@@ -44,9 +44,11 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
-	http.HandleFunc("/", serveHTML)
+
 	fmt.Printf("Server starting on http://localhost:" + options.Port + "\n")
 	fmt.Printf("Server checking URL: " + options.Url + "\n")
+
+	http.HandleFunc("/", serveHTML)
 	http.ListenAndServe(":"+options.Port, nil)
 }
 
@@ -56,6 +58,7 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 		<html>
 		<head>
 			<meta charset="UTF-8">
+			<link rel="icon" href="data:,">
 			<title>Auto-Reloading Web Page</title>
 			<style type="text/css">
 				.body {
