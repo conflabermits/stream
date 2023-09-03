@@ -65,11 +65,11 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 					width: auto;
 				}
 				div.main {
-					font-size: 48px;
+					font-size: 18px;
 					color: yellowgreen;
 				}
 				h1 {
-					font-size: 64px;
+					font-size: 24px;
 					color: yellowgreen;
 				}
 			</style>
@@ -83,7 +83,7 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 		<body>
 			<h1>Donorbox progress:</h1>
 			<div class="main">
-				<p>` + getDonorboxProgress() + `</p>
+				<p><b>` + getDonorboxProgress() + `</b></p>
 			</div>
 		</body>
 		</html>
