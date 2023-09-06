@@ -19,16 +19,19 @@ TO DO:
 */
 
 type Options struct {
-	Url  string
-	Port string
+	Url     string
+	Port    string
+	Timeout int
 }
 
 var targetUrl string
+var pageTimeout string
 
 func parseArgs() (*Options, error) {
 	options := &Options{}
 	flag.StringVar(&options.Url, "url", "http://localhost:8080", "Donorbox URL to check")
 	flag.StringVar(&options.Port, "port", "38080", "Port to run the local web server")
+	flag.IntVar(&options.Timeout, "timeout", 60, "Page refresh rate, in seconds")
 	flag.Usage = func() {
 		fmt.Printf("Usage: <app> [options]\n\n")
 		flag.PrintDefaults()
@@ -36,6 +39,7 @@ func parseArgs() (*Options, error) {
 	flag.Parse()
 
 	targetUrl = options.Url
+	pageTimeout = strconv.Itoa(options.Timeout * 1000)
 	return options, nil
 }
 
@@ -78,7 +82,7 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 				function reloadPage() {
 					location.reload();
 				}
-				setTimeout(reloadPage, 61000); // Reload every N milliseconds
+				setTimeout(reloadPage, ` + pageTimeout + `); // Reload every N milliseconds
 			</script>
 		</head>
 		<body>
