@@ -61,16 +61,17 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 			<link rel="icon" href="data:,">
 			<title>Auto-Reloading Web Page</title>
 			<style type="text/css">
-				.body {
+				* {
 					width: auto;
-				}
-				div.main {
-					font-size: 18px;
-					color: yellowgreen;
+					font-family: Verdana, Arial, sans-serif;
+					color: white;
+					text-shadow: 0 0 2px blue, 0 0 4px hotpink;
 				}
 				h1 {
 					font-size: 24px;
-					color: yellowgreen;
+				}
+				div.main {
+					font-size: 18px;
 				}
 			</style>
 			<script>
