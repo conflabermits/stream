@@ -5,14 +5,6 @@ import (
 	"net/http"
 )
 
-/*
-TO DO:
-* Add function for checking current donorbox values
-* Turn HTML content into a template
-* Give the HTML template some inputs for changing reload interval, maybe other things
-* Give the HTML template a button to save changes and reload with new values
-*/
-
 func main() {
 	http.HandleFunc("/", serveHTML)
 	fmt.Println("Server listening on port 8080")
@@ -43,7 +35,15 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
   <picture id="avatar_picture" style="background-image: url(https://cdn.filestackcontent.com/fYNYJqS2TsqcUet2k7Uh)"></picture>
 </article><style type="text/css">.progress .meter {
   width: 0%;
-}</style><section class="donation-meter secondary-tabs"><div class="row collapse"><div class="small-12 columns"><div class="tabs-content" style="margin-bottom: 0"><div class="content active" id="panel-1"><div class="progress"><div class="meter"></div></div><div class="description"><div><p class="bold" id="total-raised">$0</p><p>Raised</p></div><div class="middle"><p class="bold" id="paid-count">0</p><p>Donations</p></div><div><p class="bold">$500</p><p>Goal</p></div></div></div></div></div></div></section><section class="content-description"><section class="donor-campaign-details fr-view" notranslate=""><p fr-original-style="" style="margin-top: 0px; margin-bottom: 0px;">Black Girls CODE builds pathways for Black girls to embrace the current tech marketplace as builders and creators by introducing them to skills in computer programming and technology, and closing the opportunity gap for Black women and girls. BGC is a global movement to establish equal representation in the tech sector and is devoted to showing the world that Black girls can code and do so much more. As someone who works in tech and sees the lower representation of both Black people and women in the field, I'm compelled to enable change that makes the next generation more diverse and equitable. Please support Black Girls CODE if you can!</p><p fr-original-style="" style="margin-top: 0px; margin-bottom: 0px;"><br fr-original-style="" style="margin-bottom: 0px;"></p><p fr-original-style="" style="margin-top: 0px; margin-bottom: 0px;"><span contenteditable="false" draggable="true" fr-original-class="fr-video fr-deletable fr-fvc fr-dvb fr-draggable" fr-original-style="" style="user-select: none; text-align: center; position: relative; display: block; clear: both;"><iframe width="640" height="360" src="https://www.youtube.com/embed/RSZ4kw0gusk?&amp;wmode=opaque" frameborder="0" allowfullscreen="" fr-original-style="" fr-original-class="fr-draggable video-blocker-visited" style="box-sizing: content-box; max-width: 100%; border: none;"></iframe></span><br fr-original-style="" style="margin-bottom: 0px;"></p></section><section class="desc-sharing mobile"><div id="sharing-buttons" class="sharing_buttons" notranslate="">
+}</style><section class="donation-meter secondary-tabs"><div class="row collapse"><div class="small-12 columns"><div class="tabs-content" style="margin-bottom: 0"><div class="content active" id="panel-1"><div class="progress"><div class="meter"></div></div><div class="description">
+
+<div><p class="bold" id="total-raised">$10.01</p><p>Raised</p></div>
+
+<div class="middle"><p class="bold" id="paid-count">2</p><p>Donations</p></div>
+
+<div><p class="bold">$500</p><p>Goal</p></div>
+
+</div></div></div></div></div></section><section class="content-description"><section class="donor-campaign-details fr-view" notranslate=""><p fr-original-style="" style="margin-top: 0px; margin-bottom: 0px;">Black Girls CODE builds pathways for Black girls to embrace the current tech marketplace as builders and creators by introducing them to skills in computer programming and technology, and closing the opportunity gap for Black women and girls. BGC is a global movement to establish equal representation in the tech sector and is devoted to showing the world that Black girls can code and do so much more. As someone who works in tech and sees the lower representation of both Black people and women in the field, I'm compelled to enable change that makes the next generation more diverse and equitable. Please support Black Girls CODE if you can!</p><p fr-original-style="" style="margin-top: 0px; margin-bottom: 0px;"><br fr-original-style="" style="margin-bottom: 0px;"></p><p fr-original-style="" style="margin-top: 0px; margin-bottom: 0px;"><span contenteditable="false" draggable="true" fr-original-class="fr-video fr-deletable fr-fvc fr-dvb fr-draggable" fr-original-style="" style="user-select: none; text-align: center; position: relative; display: block; clear: both;"><iframe width="640" height="360" src="https://www.youtube.com/embed/RSZ4kw0gusk?&amp;wmode=opaque" frameborder="0" allowfullscreen="" fr-original-style="" fr-original-class="fr-draggable video-blocker-visited" style="box-sizing: content-box; max-width: 100%; border: none;"></iframe></span><br fr-original-style="" style="margin-bottom: 0px;"></p></section><section class="desc-sharing mobile"><div id="sharing-buttons" class="sharing_buttons" notranslate="">
   <div class="ty-footer-content clearfix">
     <div class="dwc">
       <a role="button" class="resp-sharing-button__link" data-href="https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdonorbox.org%2Fsupport-black-girls-code%2Ffundraiser%2Fchristopher-dunaj" aria-label="Facebook" target="_blank" onclick="off_x=(screen.width/2)-200;off_y=event.clientY-185;window.open(this.getAttribute('data-href'), 'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=250,left='+off_x+',top='+off_y); return false;">
@@ -99,5 +99,6 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 	`
 
 	w.Header().Set("Content-Type", "text/html")
+	fmt.Println("Served page")
 	fmt.Fprint(w, htmlContent)
 }

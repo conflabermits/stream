@@ -10,6 +10,7 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
 * Countdown solver
 * Pokemon lister
 * Database webservice
+* Go + GraphQL backend service
 
 ## Chrome Browser Plugin Notes/Resources
 
@@ -21,3 +22,8 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
 * [How to make a Chrome browser extension from scratch | Understanding Chrome extension anatomy (Medium)](https://medium.com/front-end-weekly/how-to-make-a-chrome-browser-extension-from-scratch-chrome-extension-development-basics-basic-ba1daee11123)
 * [How to Create a Chrome Extension in 10 Minutes Flat (SitePoint)](https://www.sitepoint.com/create-chrome-extension-10-minutes-flat/)
 * [The Simplest Example of a Useful Chrome Browser Extension (GitHub - louisebolden)](https://github.com/louisebolden/simple-chrome-extension)
+
+## Go + GraphQL backend service Notes/Resources
+
+* [Building a GraphQL server in Go with go-graphql (ApolloBlog)](https://www.apollographql.com/blog/graphql/golang/building-a-graphql-server-in-go-with-go-graphql/)
+* [GraphQL Go Tutorial (HowToGraphQL)](https://www.howtographql.com/graphql-go/0-introduction/)
