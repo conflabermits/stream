@@ -5,14 +5,6 @@ import (
 	"net/http"
 )
 
-/*
-TO DO:
-* Add function for checking current donorbox values
-* Turn HTML content into a template
-* Give the HTML template some inputs for changing reload interval, maybe other things
-* Give the HTML template a button to save changes and reload with new values
-*/
-
 func main() {
 	http.HandleFunc("/", serveHTML)
 	fmt.Println("Server listening on port 8080")

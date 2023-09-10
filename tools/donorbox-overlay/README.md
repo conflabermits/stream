@@ -13,22 +13,28 @@ Total raised: $0
 Funraiser goal: $500
 ```
 
-Later I was able to piece together a simple Go single page web server that allows me to test out the web source overlay as a proof of concept, just to make sure I can clearly display content that updates regularly. (That's what `main.go` currently does.)
+Later I was able to piece together a simple Go single page web server, `sample-html/sample.go`, that allows me to test out the web source overlay as a proof of concept, just to make sure I can clearly display content that updates regularly.
 
-The latest development is an HTML scraper/parser written in Go that essentially does the same thing as a Python script: scrape the Donorbox page and output the current progress.
+The latest development is an HTML scraper/parser written in Go that essentially does the same thing as a Python script: scrape the Donorbox page and output the current progress. Argument parsing has also been added to make it easier to specify the target URL to check and the local port to run the web server.
 
 ```text
-$ go run main.go 
+$ go run main.go -port 38080 -timeout 15 -url https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj
+Server starting on http://localhost:38080
+Server checking URL: https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj
 Fetching URL: https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj
-Number of contributors: 1
-Total raised: $ 53.03
-Raise goal: $ 500
+  Number of contributors: 2
+  Total raised: $78.03
+  Raise goal: $500
 ```
 
-It's been integrated into the HTML web server so the page reload now calls the function and returns HTML-formatted text of the current fundraiser data.
+It's been integrated into an HTML single page web server so the page reload now calls the function and returns HTML-formatted text of the current fundraiser data.
 
-Argument parsing has also been added to make it easier to specify the target URL to check and the local port to run the web server.
+![donorbox-overlay-html](donorbox-overlay-html.png "donorbox-overlay-html")
+
+(The white background is treated as transparent in the web source overlay, and the white text shows up better against the background of brown wood paneling.)
 
 ## Next Steps
 
-I should focus on cleaning up the HTML, adding logging, and writing some tests.
+* Add logging.
+* Write some tests.
+* Add text animations, sound effects, or other attention-grabbing features when the numbers change.

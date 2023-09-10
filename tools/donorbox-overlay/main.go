@@ -14,7 +14,6 @@ import (
 /*
 TO DO:
 * Turn HTML content into a template
-* Give the HTML template some inputs for changing reload interval, maybe other things
 * Give the HTML template a button to save changes and reload with new values
 */
 
@@ -99,6 +98,8 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDonorboxProgress() string {
+	// Example code from https://www.makeuseof.com/parse-and-generate-html-in-go/
+
 	//targetUrl := "http://localhost:8080/" // For local testing
 	//targetUrl := "https://donorbox.org/support-black-girls-code/fundraiser/christopher-dunaj" // For live testing
 
@@ -118,22 +119,11 @@ func getDonorboxProgress() string {
 		return "Error"
 	}
 
-	// Find and print all links on the web page
-	//var links []string
 	var totalRaised float64
 	var paidCount string
 	var raiseGoal float64
 	var link func(*html.Node)
 	link = func(n *html.Node) {
-
-		/* if n.Type == html.ElementNode && n.Data == "a" {
-			for _, a := range n.Attr {
-				if a.Key == "href" {
-					// adds a new link entry when the attribute matches
-					links = append(links, a.Val)
-				}
-			}
-		} */
 
 		dollarMatch, _ := regexp.MatchString("^\\$\\d{1,}", n.Data)
 
@@ -173,10 +163,6 @@ func getDonorboxProgress() string {
 
 	link(doc)
 
-	// loops through the links slice
-	/* for _, l := range links {
-		fmt.Println("Link:", l)
-	} */
 	fmt.Println("  Number of contributors:", paidCount)
 	fmt.Printf("  Total raised: $%g\n", totalRaised)
 	fmt.Printf("  Raise goal: $%g\n", raiseGoal)
