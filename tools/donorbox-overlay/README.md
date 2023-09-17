@@ -36,5 +36,8 @@ It's been integrated into an HTML single page web server so the page reload now 
 ## Next Steps
 
 * Add text animations, sound effects, or other attention-grabbing features when the numbers change.
+  * Define more CSS tags for alerts vs normal content.
+  * Pass function content using CSS tags instead of hard-coded HTML tags.
+  * Add logic in function to determine if old numbers match new numbers, and trigger additional alert content if not.
 * Add logging.
 * Write some tests.
