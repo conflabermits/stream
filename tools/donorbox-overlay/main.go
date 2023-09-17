@@ -58,11 +58,12 @@ func main() {
 func serveHTML(w http.ResponseWriter, r *http.Request) {
 	htmlContent := `
 		<!DOCTYPE html>
-		<html>
+		<html lang="en">
 		<head>
 			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<link rel="icon" href="data:,">
-			<title>Auto-Reloading Web Page</title>
+			<title>Donorbox Progress Overlay</title>
 			<style type="text/css">
 				* {
 					width: auto;
@@ -76,6 +77,22 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 				div.main {
 					font-size: 18px;
 				}
+				.rainbow-text {
+					background: linear-gradient(45deg, #f06, #9f6, #06f, #f06);
+					background-size: 400% 400%;
+					background-clip: text;
+					-webkit-background-clip: text;
+					-webkit-text-fill-color: transparent;
+					animation: rainbow-animation 4s linear infinite;
+				}
+				@keyframes rainbow-animation {
+					0% {
+						background-position: 0 50%;
+					}
+					100% {
+						background-position: 100% 50%;
+					}
+				}
 			</style>
 			<script>
 				function reloadPage() {
@@ -86,9 +103,7 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 		</head>
 		<body>
 			<h1>Donorbox progress:</h1>
-			<div class="main">
-				<p><b>` + getDonorboxProgress() + `</b></p>
-			</div>
+			` + getDonorboxProgress() + `
 		</body>
 		</html>
 	`
@@ -167,6 +182,18 @@ func getDonorboxProgress() string {
 	fmt.Printf("  Total raised: $%g\n", totalRaised)
 	fmt.Printf("  Raise goal: $%g\n", raiseGoal)
 
-	return fmt.Sprintf("Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g", paidCount, totalRaised, raiseGoal)
+	newDonoText := "<div class=\"rainbow-text\"><p><b>WE HAVE A NEW DONATION!!</b></p></div>"
+
+	return fmt.Sprintf(
+		"<div class=\"main\"><p><b>Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g</b></p></div>%s",
+		paidCount,
+		totalRaised,
+		raiseGoal,
+		newDonoText,
+	)
+
+	// Return `class="main"` for normal content and `class="rainbow-text"` for alert content
+	// <div class="main"><p><b>Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g</b></p></div>
+	// <div class="rainbow-text"><p><b>WE HAVE A NEW DONATION!!</b></p></div>
 
 }
