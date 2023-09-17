@@ -35,6 +35,6 @@ It's been integrated into an HTML single page web server so the page reload now 
 
 ## Next Steps
 
+* Add text animations, sound effects, or other attention-grabbing features when the numbers change.
 * Add logging.
 * Write some tests.
-* Add text animations, sound effects, or other attention-grabbing features when the numbers change.
