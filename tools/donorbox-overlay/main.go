@@ -71,6 +71,15 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 					color: white;
 					text-shadow: 0 0 2px blue, 0 0 4px hotpink;
 				}
+				.container {
+					background-color: rgb(228, 245, 252);
+					width: 80%;
+					max-width: 800px;
+					margin: 0 auto;
+					padding: 20px;
+					border-radius: 10px;
+					box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+				}
 				h1 {
 					font-size: 24px;
 				}
@@ -78,6 +87,7 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 					font-size: 18px;
 				}
 				.rainbow-text {
+					font-size: 36px;
 					background: linear-gradient(45deg, #f06, #9f6, #06f, #f06);
 					background-size: 400% 400%;
 					background-clip: text;
@@ -102,8 +112,10 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 			</script>
 		</head>
 		<body>
-			<h1>Donorbox progress:</h1>
-			` + getDonorboxProgress() + `
+			<div class="container">
+				<h1>Donorbox progress:</h1>
+				` + getDonorboxProgress() + `
+			</div>
 		</body>
 		</html>
 	`
@@ -182,7 +194,7 @@ func getDonorboxProgress() string {
 	fmt.Printf("  Total raised: $%g\n", totalRaised)
 	fmt.Printf("  Raise goal: $%g\n", raiseGoal)
 
-	newDonoText := "<div class=\"rainbow-text\"><p><b>WE HAVE A NEW DONATION!!</b></p></div>"
+	newDonoText := "<h1 class=\"rainbow-text\">WE HAVE A NEW DONATION!!</h1>"
 
 	return fmt.Sprintf(
 		"<div class=\"main\"><p><b>Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g</b></p></div>%s",
