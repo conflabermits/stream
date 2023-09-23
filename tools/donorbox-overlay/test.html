@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="data:,">
+        <title>Donorbox Progress Overlay</title>
+        <style type="text/css">
+                * {
+                        width: auto;
+                        font-family: Verdana, Arial, sans-serif;
+                        font-weight: bold;
+                }
+                h1 {
+                        font-size: 24px;
+                }
+                div.main {
+                        font-size: 18px;
+                        color: white;
+                        text-shadow: 0 0 2px blue, 0 0 4px hotpink;
+                }
+                .rainbow-text {
+                        font-size: 36px;
+                        background: linear-gradient(45deg, #f06, #9f6, #06f, #f06, #9f6, #06f);
+                        background-size: 400% 400%;
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        animation: rainbow-animation 6s linear infinite;
+                }
+                @keyframes rainbow-animation {
+                        0% {
+                                background-position: 0 50%;
+                        }
+                        100% {
+                                background-position: 100% 50%;
+                        }
+                }
+        </style>
+</head>
+<body>
+        <div class="main">
+                <h1>Donorbox progress:</h1>
+                <p>
+                        Number of contributors: 2<BR>
+                        Total raised: $10.02<BR>
+                        Raise goal: $500
+                </p>
+        </div>
+        <audio autoplay loop>
+                <source src="ff4_fanfare_ringtone.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+        </audio>
+        <div class="rainbow-text">
+                WE HAVE A NEW DONATION!!
+        </div>
+</body>
+</html>
