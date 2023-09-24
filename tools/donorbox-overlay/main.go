@@ -187,7 +187,6 @@ func getDonorboxProgress() string {
 	fmt.Printf("  Raise goal: $%g\n", raiseGoal)
 
 	newDonoText := "</div><div class=\"rainbow-text\">WE HAVE A NEW DONATION!!"
-	//newDonoText := "</div><audio autoplay loop><source src=\"ff4_fanfare_ringtone.mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio><div class=\"rainbow-text\">WE HAVE A NEW DONATION!!"
 
 	return fmt.Sprintf(
 		"<p>Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g</p>%s",
