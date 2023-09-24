@@ -25,6 +25,7 @@ type Options struct {
 
 var targetUrl string
 var pageTimeout string
+var prevDonoAmount float64 = 0.01
 
 func parseArgs() (*Options, error) {
 	options := &Options{}
@@ -186,7 +187,11 @@ func getDonorboxProgress() string {
 	fmt.Printf("  Total raised: $%g\n", totalRaised)
 	fmt.Printf("  Raise goal: $%g\n", raiseGoal)
 
-	newDonoText := "</div><div class=\"rainbow-text\">WE HAVE A NEW DONATION!!"
+	var newDonoText string = ""
+	if prevDonoAmount != 0.01 && prevDonoAmount < totalRaised {
+		newDonoText = "</div><div class=\"rainbow-text\">WE HAVE A NEW DONATION!!"
+	}
+	prevDonoAmount = totalRaised
 
 	return fmt.Sprintf(
 		"<p>Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g</p>%s",
