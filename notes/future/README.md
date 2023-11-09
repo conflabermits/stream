@@ -11,6 +11,7 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
 * Pokemon lister
 * Database webservice
 * Go + GraphQL backend service
+* Twitch Chat Bot
 
 ## Chrome Browser Plugin Notes/Resources
 
@@ -27,3 +28,10 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
 
 * [Building a GraphQL server in Go with go-graphql (ApolloBlog)](https://www.apollographql.com/blog/graphql/golang/building-a-graphql-server-in-go-with-go-graphql/)
 * [GraphQL Go Tutorial (HowToGraphQL)](https://www.howtographql.com/graphql-go/0-introduction/)
+
+## Twitch Chat Bot Notes/Resources
+
+* [Building a Twitch.tv Chat Bot with Go - Part 1](https://dev.to/foresthoffman/building-a-twitchtv-chat-bot-with-go---part-1-i3k)
+  * [GitHub Repo](https://github.com/foresthoffman/bot)
+* [go-twitch-irc GitHub Repo](https://github.com/gempir/go-twitch-irc)
+* [Twitch dev docs - Chat and Chatbots](https://dev.twitch.tv/docs/irc/)
