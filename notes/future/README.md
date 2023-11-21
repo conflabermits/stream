@@ -4,7 +4,7 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
 
 ## Future Ideas For Future Streams
 
-* JSON prettifier webpage
+* JSON prettifier webpage (started [here](https://github.com/conflabermits/json-prettifier))
 * Font-changer browser plugin
 * Wordle Helper reboot
 * Countdown solver
