@@ -13,6 +13,7 @@ import (
 
 /*
 TO DO:
+* FIX IMAGES!! Either fix path or host externally or do an FS embed!
 * Turn HTML content into a template
 * Give the HTML template a button to save changes and reload with new values
 */
@@ -60,56 +61,51 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 	htmlContent := `
 		<!DOCTYPE html>
 		<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<link rel="icon" href="data:,">
-			<title>Donorbox Progress Overlay</title>
-			<style type="text/css">
-				* {
-					width: auto;
-					font-family: Verdana, Arial, sans-serif;
-					font-weight: bold;
-				}
-				h1 {
-					font-size: 24px;
-				}
-				div.main {
-					font-size: 18px;
-					color: white;
-					text-shadow: 0 0 2px blue, 0 0 4px hotpink;
-				}
-				.rainbow-text {
-					font-size: 36px;
-					background: linear-gradient(45deg, #f06, #9f6, #06f, #f06, #9f6, #06f);
-					background-size: 400% 400%;
-					background-clip: text;
-					-webkit-background-clip: text;
-					-webkit-text-fill-color: transparent;
-					animation: rainbow-animation 6s linear infinite;
-				}
-				@keyframes rainbow-animation {
-					0% {
-						background-position: 0 50%;
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<link rel="icon" href="data:,">
+				<title>Donorbox Progress Overlay</title>
+				<style type="text/css">
+					* {
+						width: auto;
+						font-family: Verdana, Arial, sans-serif;
+						font-weight: bold;
 					}
-					100% {
-						background-position: 100% 50%;
+					h1 {
+						font-size: 24px;
 					}
-				}
-			</style>
-			<script>
-				function reloadPage() {
-					location.reload();
-				}
-				setTimeout(reloadPage, ` + pageTimeout + `); // Reload every N milliseconds
-			</script>
-		</head>
-		<body>
-			<div class="main">
-				<h1>Donorbox progress:</h1>
-				` + getDonorboxProgress() + `
-			</div>
-		</body>
+					div.main {
+						font-size: 18px;
+						color: white;
+						text-shadow: 0 0 2px blue, 0 0 4px hotpink;
+					}
+					.rainbow-text {
+						font-size: 36px;
+						background: linear-gradient(45deg, #f06, #9f6, #06f, #f06, #9f6, #06f);
+						background-size: 400% 400%;
+						background-clip: text;
+						-webkit-background-clip: text;
+						-webkit-text-fill-color: transparent;
+						animation: rainbow-animation 6s linear infinite;
+					}
+					@keyframes rainbow-animation {
+						0% {
+							background-position: 0 50%;
+						}
+						100% {
+							background-position: 100% 50%;
+						}
+					}
+				</style>
+				<script>
+					function reloadPage() {
+						location.reload();
+					}
+					setTimeout(reloadPage, ` + pageTimeout + `); // Reload every N milliseconds
+				</script>
+			</head>
+			` + getDonorboxProgress() + `
 		</html>
 	`
 
@@ -187,22 +183,45 @@ func getDonorboxProgress() string {
 	fmt.Printf("  Total raised: $%g\n", totalRaised)
 	fmt.Printf("  Raise goal: $%g\n", raiseGoal)
 
-	var newDonoText string = ""
+	var standard_html_body string = `
+		<body>
+		<div class="main">
+			<h1>Donorbox progress:</h1>
+			<p>
+				Number of contributors: ` + paidCount + `<BR>
+				Total raised: $` + fmt.Sprintf("%g", totalRaised) + `<BR>
+				Raise goal: $` + fmt.Sprintf("%g", raiseGoal) + `
+			</p>
+		</div>
+		</body>
+	`
+
+	var newdono_html_body string = `
+		<body style="background-image: url('images/rainbow_fireworks.gif');">
+		<div class="main">
+			<h1 style="background-image: url('images/red_fireworks.gif');">Donorbox progress:</h1>
+			<p style="background-image: url('images/confetti.gif');">
+			Number of contributors: ` + paidCount + `<BR>
+			Total raised: $` + fmt.Sprintf("%g", totalRaised) + `<BR>
+			Raise goal: $` + fmt.Sprintf("%g", raiseGoal) + `
+		</p>
+		</div>
+		<div class="rainbow-text">
+			WE HAVE A NEW DONATION!!
+		</div>
+		<img src="images/rainbow-sparkle-fireworks.gif" alt="fireworks gif" />
+		</body>
+	`
+
+	var html_body string
+
 	if prevDonoAmount != 0.01 && prevDonoAmount < totalRaised {
-		newDonoText = "</div><div class=\"rainbow-text\">WE HAVE A NEW DONATION!!"
+		html_body = newdono_html_body
+	} else {
+		html_body = standard_html_body
 	}
 	prevDonoAmount = totalRaised
 
-	return fmt.Sprintf(
-		"<p>Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g</p>%s",
-		paidCount,
-		totalRaised,
-		raiseGoal,
-		newDonoText,
-	)
-
-	// Return `class="main"` for normal content and `class="rainbow-text"` for alert content
-	// <div class="main"><p><b>Number of contributors: %s<BR>Total raised: $%g<BR>Raise goal: $%g</b></p></div>
-	// <div class="rainbow-text"><p><b>WE HAVE A NEW DONATION!!</b></p></div>
+	return html_body
 
 }
