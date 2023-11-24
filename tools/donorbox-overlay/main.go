@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"fmt"
 	"net/http"
@@ -10,6 +11,9 @@ import (
 
 	"golang.org/x/net/html"
 )
+
+//go:embed images
+var fsys embed.FS
 
 /*
 TO DO:
@@ -52,6 +56,8 @@ func main() {
 
 	fmt.Printf("Server starting on http://localhost:" + options.Port + "\n")
 	fmt.Printf("Server checking URL: " + options.Url + "\n")
+
+	http.Handle("/images/", http.FileServer(http.FS(fsys)))
 
 	http.HandleFunc("/", serveHTML)
 	http.ListenAndServe(":"+options.Port, nil)
@@ -197,7 +203,7 @@ func getDonorboxProgress() string {
 	`
 
 	var newdono_html_body string = `
-		<body style="background-image: url('images/rainbow_fireworks.gif');">
+		<body style="background-image: url('images/rainbow-sparkle-fireworks.gif');">
 		<div class="main">
 			<h1 style="background-image: url('images/red_fireworks.gif');">Donorbox progress:</h1>
 			<p style="background-image: url('images/confetti.gif');">
@@ -209,7 +215,7 @@ func getDonorboxProgress() string {
 		<div class="rainbow-text">
 			WE HAVE A NEW DONATION!!
 		</div>
-		<img src="images/rainbow-sparkle-fireworks.gif" alt="fireworks gif" />
+		<img src="images/rainbow_fireworks.gif" alt="fireworks gif" />
 		</body>
 	`
 
