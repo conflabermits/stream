@@ -16,8 +16,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"log"
+	"os"
 
 	"golang.org/x/oauth2/clientcredentials"
 	"golang.org/x/oauth2/twitch"
@@ -53,6 +53,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Access token: %s\n", token.AccessToken)
+	fmt.Printf("Access token: oauth:%s\n", token.AccessToken)
 }
-

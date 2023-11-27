@@ -26,9 +26,9 @@ func main() {
 	//username := "your_twitch_username"
 	//token := "your_oauth_token"
 	//channel := "channel_to_join"
-	username := getEnvVar("twitchUsername")
-	token := getEnvVar("twitchToken")
-	channel := getEnvVar("twitchChannel")
+	username := getEnvVar("twitchUsername") //e.g., "conflabermits"
+	token := getEnvVar("twitchToken")       //e.g., "oauth:<token>"
+	channel := getEnvVar("twitchChannel")   //e.g., "conflabermits"
 
 	// Create a new Twitch client
 	client := twitch.NewClient(username, token)
@@ -42,6 +42,9 @@ func main() {
 		// For example, you can check for specific commands and reply accordingly
 		if message.Message == "!hello" {
 			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"!")
+		}
+		if message.Message == "!bottest" {
+			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"! This is a test of the bot!")
 		}
 	})
 
@@ -62,4 +65,3 @@ func main() {
 	// Disconnect from Twitch IRC on shutdown
 	client.Disconnect()
 }
-
