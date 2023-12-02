@@ -31,7 +31,7 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
 
 ## Twitch Chat Bot Notes/Resources
 
-Not sure what to use it for yet, but an [alphabetizer](https://github.com/conflabermits/Scripts/blob/main/shell/alphab/alphab.sh) might be one idea.
+Not sure what to use it for yet, but an [alphabetizer](https://github.com/conflabermits/Scripts/blob/main/shell/alphab/alphab.sh) might be one [idea](https://www.geeksforgeeks.org/how-to-sort-a-slice-of-strings-in-golang/#).
 
 * [Building a Twitch.tv Chat Bot with Go - Part 1](https://dev.to/foresthoffman/building-a-twitchtv-chat-bot-with-go---part-1-i3k)
   * [GitHub Repo](https://github.com/foresthoffman/bot)
