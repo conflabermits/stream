@@ -31,7 +31,10 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
 
 ## Twitch Chat Bot Notes/Resources
 
+Not sure what to use it for yet, but an [alphabetizer](https://github.com/conflabermits/Scripts/blob/main/shell/alphab/alphab.sh) might be one idea.
+
 * [Building a Twitch.tv Chat Bot with Go - Part 1](https://dev.to/foresthoffman/building-a-twitchtv-chat-bot-with-go---part-1-i3k)
   * [GitHub Repo](https://github.com/foresthoffman/bot)
 * [go-twitch-irc GitHub Repo](https://github.com/gempir/go-twitch-irc)
 * [Twitch dev docs - Chat and Chatbots](https://dev.twitch.tv/docs/irc/)
+* [Building a TwitchPlays Game](https://jeffzzq.medium.com/building-a-twitchplays-game-4609a3708469)
