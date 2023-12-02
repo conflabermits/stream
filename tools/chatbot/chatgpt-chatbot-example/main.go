@@ -41,21 +41,25 @@ func main() {
 		// You can add your own logic here to respond to messages
 		// For example, you can check for specific commands and reply accordingly
 		if message.Message == "!hello" {
+			log.Println("Detected !hello message")
 			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"!")
 		}
 		if message.Message == "!bottest" {
+			log.Println("Detected !bottest message")
 			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"! This is a test of the bot!")
 		}
 	})
+
+	client.OnConnect(func() { client.Say("conflabermits", "I'm in!") })
+
+	// Join the specified channel
+	client.Join(channel)
 
 	// Connect to Twitch IRC -- CURRENTLY FAILING HERE
 	err := client.Connect()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// Join the specified channel
-	client.Join(channel)
 
 	// Wait for a signal to gracefully shut down the bot
 	sigChan := make(chan os.Signal, 1)

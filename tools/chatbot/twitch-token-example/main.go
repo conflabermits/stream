@@ -46,6 +46,7 @@ func main() {
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		TokenURL:     twitch.Endpoint.TokenURL,
+		Scopes:       []string{"chat:read", "chat:edit", "user:bot", "user:read:chat", "channel:bot"},
 	}
 
 	token, err := oauth2Config.Token(context.Background())
