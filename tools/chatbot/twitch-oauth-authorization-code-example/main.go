@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/sessions"
 	"golang.org/x/oauth2"
@@ -35,15 +36,26 @@ const (
 )
 
 var (
-	clientID = "<CLIENT_ID>"
+	//clientID = "<CLIENT_ID>"
+	//clientSecret = "<CLIENT_SECRET>"
 	// Consider storing the secret in an environment variable or a dedicated storage system.
-	clientSecret = "<CLIENT_SECRET>"
-	scopes       = []string{"user:read:email"}
-	redirectURL  = "http://localhost:7001/redirect"
+	clientID     = getEnvVar("clientId")
+	clientSecret = getEnvVar("clientSecret")
+	scopes       = []string{"chat:read", "chat:edit"}
+	redirectURL  = "http://localhost:8080/redirect"
 	oauth2Config *oauth2.Config
-	cookieSecret = []byte("Please use a more sensible secret than this one")
+	cookieSecret = []byte("I don't think this is a good secret either")
 	cookieStore  = sessions.NewCookieStore(cookieSecret)
 )
+
+func getEnvVar(key string) string {
+	value, exists := os.LookupEnv(key)
+	if !exists {
+		fmt.Printf("Error: Environment variable %s is not set\n", key)
+		os.Exit(1)
+	}
+	return value
+}
 
 // HandleRoot is a Handler that shows a login button. In production, if the frontend is served / generated
 // by Go, it should use html/template to prevent XSS attacks.
@@ -121,7 +133,8 @@ func HandleOAuth2Callback(w http.ResponseWriter, r *http.Request) (err error) {
 	// add the oauth token to session
 	session.Values[oauthTokenKey] = token
 
-	fmt.Printf("Access token: %s\n", token.AccessToken)
+	//fmt.Printf("Access token: %s\n", token.AccessToken)
+	fmt.Printf("Access token got\n")
 
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 
@@ -212,6 +225,6 @@ func main() {
 	handleFunc("/login", HandleLogin)
 	handleFunc("/redirect", HandleOAuth2Callback)
 
-	fmt.Println("Started running on http://localhost:7001")
-	fmt.Println(http.ListenAndServe(":7001", nil))
+	fmt.Println("Started running on http://localhost:8080")
+	fmt.Println(http.ListenAndServe(":8080", nil))
 }

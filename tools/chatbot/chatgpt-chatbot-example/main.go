@@ -48,6 +48,10 @@ func main() {
 			log.Println("Detected !bottest message")
 			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"! This is a test of the bot!")
 		}
+		if message.Message == "!byebot" {
+			log.Println("Detected !byebot message")
+			client.Say(message.Channel, "Goodbye, "+message.User.DisplayName+"! I'll miss you!")
+		}
 	})
 
 	client.OnConnect(func() { client.Say("conflabermits", "I'm in!") })
@@ -55,7 +59,7 @@ func main() {
 	// Join the specified channel
 	client.Join(channel)
 
-	// Connect to Twitch IRC -- CURRENTLY FAILING HERE
+	// Connect to Twitch IRC
 	err := client.Connect()
 	if err != nil {
 		log.Fatal(err)
