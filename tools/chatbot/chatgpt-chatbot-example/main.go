@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"sort"
+	"strings"
 	"syscall"
 
 	"github.com/gempir/go-twitch-irc/v4"
@@ -19,6 +21,13 @@ func getEnvVar(key string) string {
 		os.Exit(1)
 	}
 	return value
+}
+
+func alphabetize(message string) string {
+	words := strings.Fields(message)
+	sort.Strings(words)
+	result := strings.Join(words, " ")
+	return result
 }
 
 func main() {
@@ -44,13 +53,14 @@ func main() {
 			log.Println("Detected !hello message")
 			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"!")
 		}
-		if message.Message == "!bottest" {
-			log.Println("Detected !bottest message")
-			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"! This is a test of the bot!")
-		}
 		if message.Message == "!byebot" {
 			log.Println("Detected !byebot message")
 			client.Say(message.Channel, "Goodbye, "+message.User.DisplayName+"! I'll miss you!")
+		}
+		if strings.HasPrefix(message.Message, "!abc ") {
+			log.Println("Detected !abc message")
+			commandText := strings.TrimPrefix(message.Message, "!abc ")
+			client.Say(message.Channel, alphabetize(commandText))
 		}
 	})
 
