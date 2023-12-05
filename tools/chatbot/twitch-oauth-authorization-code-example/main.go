@@ -133,8 +133,8 @@ func HandleOAuth2Callback(w http.ResponseWriter, r *http.Request) (err error) {
 	// add the oauth token to session
 	session.Values[oauthTokenKey] = token
 
-	//fmt.Printf("Access token: %s\n", token.AccessToken)
-	fmt.Printf("Access token got\n")
+	fmt.Printf("Access token: %s\n", token.AccessToken)
+	//fmt.Printf("Access token got\n")
 
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 
