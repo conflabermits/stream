@@ -3,13 +3,19 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"sort"
 	"strings"
 	"syscall"
+	"time"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/gempir/go-twitch-irc/v4"
 )
@@ -23,11 +29,104 @@ func getEnvVar(key string) string {
 	return value
 }
 
+// Borrowed code for better alphabetizer, case insensitive!
+// https://programming-idioms.org/idiom/297/sort-a-list-of-strings-case-insensitively/5458/go
+
+func lessCaseInsensitive(s, t string) bool {
+	for {
+		if len(t) == 0 {
+			return false
+		}
+		if len(s) == 0 {
+			return true
+		}
+		c, sizec := utf8.DecodeRuneInString(s)
+		d, sized := utf8.DecodeRuneInString(t)
+
+		lowerc := unicode.ToLower(c)
+		lowerd := unicode.ToLower(d)
+
+		if lowerc < lowerd {
+			return true
+		}
+		if lowerc > lowerd {
+			return false
+		}
+
+		s = s[sizec:]
+		t = t[sized:]
+	}
+}
+
 func alphabetize(message string) string {
 	words := strings.Fields(message)
-	sort.Strings(words)
+	sort.Slice(words, func(i, j int) bool { return lessCaseInsensitive(words[i], words[j]) })
 	result := strings.Join(words, " ")
 	return result
+}
+
+// Borrowed some code from Twilio's example for getting inspirational quotes
+// https://www.twilio.com/blog/inspire-your-friends-using-go-twilio-messaging
+
+type Response struct {
+	Status     string
+	StatusCode int
+	Method     string
+	Body       []byte
+}
+
+type ZenQuotes struct {
+	Quote  string `json:"q"`
+	Author string `json:"a"`
+}
+
+func getQuote() string {
+	response, err := sendRequest()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var message ZenQuotes
+	msg := []ZenQuotes{{
+		message.Author,
+		message.Quote,
+	}}
+
+	err = json.Unmarshal(response.Body, &msg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return msg[0].Quote
+}
+
+func sendRequest() (*Response, error) {
+	r := &Response{}
+
+	httpClient := &http.Client{Timeout: 20 * time.Second}
+	zenQuotesUrl := "https://zenquotes.io/api/random"
+
+	req, err := http.NewRequest(http.MethodGet, zenQuotesUrl, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	r.Status = response.Status
+	r.StatusCode = response.StatusCode
+	r.Body = body
+
+	return r, nil
 }
 
 func main() {
@@ -61,6 +160,10 @@ func main() {
 			log.Println("Detected !abc message")
 			commandText := strings.TrimPrefix(message.Message, "!abc ")
 			client.Say(message.Channel, alphabetize(commandText))
+		}
+		if message.Message == "!randomquote" {
+			log.Println("Detected !randomquote message")
+			client.Say(message.Channel, "Random quote -- "+getQuote()+".. in bed.")
 		}
 	})
 
