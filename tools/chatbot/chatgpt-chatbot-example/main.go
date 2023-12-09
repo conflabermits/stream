@@ -161,6 +161,8 @@ func main() {
 			commandText := strings.TrimPrefix(message.Message, "!abc ")
 			client.Say(message.Channel, alphabetize(commandText))
 		}
+                // Command ideas:
+                    // !randomize - Randomize the words from the message
 		if message.Message == "!randomquote" {
 			log.Println("Detected !randomquote message")
 			client.Say(message.Channel, "Random quote -- "+getQuote()+".. in bed.")
