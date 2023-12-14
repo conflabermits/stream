@@ -161,15 +161,15 @@ func main() {
 			commandText := strings.TrimPrefix(message.Message, "!abc ")
 			client.Say(message.Channel, alphabetize(commandText))
 		}
-                // Command ideas:
-                    // !randomize - Randomize the words from the message
-		if message.Message == "!randomquote" {
-			log.Println("Detected !randomquote message")
+		// Command ideas:
+		// !randomize - Randomize the words from the message
+		if message.Message == "!quote" {
+			log.Println("Detected !quote message")
 			client.Say(message.Channel, "Random quote -- "+getQuote()+".. in bed.")
 		}
 	})
 
-	client.OnConnect(func() { client.Say("conflabermits", "I'm in!") })
+	client.OnConnect(func() { client.Say("conflabermits", "Let's GOOOOOO!") })
 
 	// Join the specified channel
 	client.Join(channel)
