@@ -148,28 +148,28 @@ func main() {
 
 		// You can add your own logic here to respond to messages
 		// For example, you can check for specific commands and reply accordingly
-		if message.Message == "!hello" {
+		if message.Message == "!hello" || message.Message == "!hellobot" {
 			log.Println("Detected !hello message")
 			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"!")
 		}
-		if message.Message == "!byebot" {
-			log.Println("Detected !byebot message")
+		if message.Message == "!bye" || message.Message == "!byebot" {
+			log.Println("Detected !bye message")
 			client.Say(message.Channel, "Goodbye, "+message.User.DisplayName+"! I'll miss you!")
 		}
-		if strings.HasPrefix(message.Message, "!abc ") {
+		if strings.HasPrefix(message.Message, "!abc ") || strings.HasPrefix(message.Message, "!alpha ") {
 			log.Println("Detected !abc message")
 			commandText := strings.TrimPrefix(message.Message, "!abc ")
 			client.Say(message.Channel, alphabetize(commandText))
 		}
 		// Command ideas:
 		// !randomize - Randomize the words from the message
-		if message.Message == "!quote" {
+		if message.Message == "!quote" || message.Message == "!randomquote" {
 			log.Println("Detected !quote message")
 			client.Say(message.Channel, "Random quote -- "+getQuote()+".. in bed.")
 		}
 	})
 
-	client.OnConnect(func() { client.Say("conflabermits", "Let's GOOOOOO!") })
+	client.OnConnect(func() { client.Say(channel, "Let's GOOOOOO!") })
 
 	// Join the specified channel
 	client.Join(channel)
