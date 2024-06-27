@@ -41,7 +41,7 @@ var (
 	// Consider storing the secret in an environment variable or a dedicated storage system.
 	clientID     = getEnvVar("clientId")
 	clientSecret = getEnvVar("clientSecret")
-	scopes       = []string{"chat:read", "chat:edit"}
+	scopes       = []string{"chat:read", "chat:edit", "channel:manage:polls"}
 	redirectURL  = "http://localhost:8080/redirect"
 	oauth2Config *oauth2.Config
 	cookieSecret = []byte("I don't think this is a good secret either")
