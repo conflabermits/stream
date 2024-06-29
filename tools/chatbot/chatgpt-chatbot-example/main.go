@@ -48,7 +48,7 @@ func sendPoll(question string, choice1 string, choice2 string) {
 	// Define your URL and data
 	url := "https://api.twitch.tv/helix/polls"
 	data := PollReqData{
-		BroadcasterId: "426422677",
+		BroadcasterId: getEnvVar("broadcaster_id"),
 		PollTitle:     question,
 		Choices: []PollChoice{
 			{Title: choice1},
@@ -56,7 +56,7 @@ func sendPoll(question string, choice1 string, choice2 string) {
 		},
 		ChannelPointsVotingEnabled: true,
 		ChannelPointsPerVote:       100,
-		Duration:                   120,
+		Duration:                   60,
 	}
 
 	// Marshal the data to JSON
@@ -73,7 +73,7 @@ func sendPoll(question string, choice1 string, choice2 string) {
 		return
 	}
 
-	// Set the Content-Type header
+	// Set the headers
 	bearerToken := strings.Split(getEnvVar("twitchToken"), ":")[1]
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+bearerToken)
@@ -239,12 +239,14 @@ func main() {
 			log.Println("Detected !quote message")
 			client.Say(message.Channel, "Random quote -- "+getQuote()+".. in bed.")
 		}
-		if message.Message == "!poll" {
+		if strings.HasPrefix(message.Message, "!poll ") {
 			log.Println("Detected !poll message")
 			client.Say(message.Channel, "Creating a poll for you!")
-			//pollText := strings.TrimPrefix(message.Message, "!poll ")
-			//words := strings.Fields(str)
-			sendPoll("question", "answer1", "answer2")
+			pollText := strings.TrimPrefix(message.Message, "!poll ")
+			log.Println("pollText: " + pollText)
+			words := strings.Fields(pollText)
+			log.Println("words: " + words[0] + " " + words[1] + " " + words[2])
+			sendPoll(words[0], words[1], words[2])
 		}
 	})
 
