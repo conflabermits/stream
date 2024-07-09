@@ -44,7 +44,10 @@ type PollChoice struct {
 	Title string `json:"title"`
 }
 
+// TODO: Add `getPoll()` function. Use it before sending poll to prevent failures and to share current poll data.
+
 func sendPoll(question string, choice1 string, choice2 string) {
+	// TODO: Allow for 2-5 choices, handle exit for number of args less than 2 or greater than 5.
 	// Define your URL and data
 	url := "https://api.twitch.tv/helix/polls"
 	data := PollReqData{
@@ -220,6 +223,12 @@ func main() {
 
 		// You can add your own logic here to respond to messages
 		// For example, you can check for specific commands and reply accordingly
+		// TODO: Make a function to parse messages using common conditions. Examples:
+		//   * startsWith(message.Message, "!string ")
+		//   * equals(message.Message, "!string")
+		//   * hasArg(message.Message, [eq,lt,gt], int)
+		//   * fromUser(message.Message, "user")
+		//   * fromRole(message.Message, [bc,mod,vip,sub,fol])
 		if message.Message == "!hello" || message.Message == "!hellobot" {
 			log.Println("Detected !hello message")
 			client.Say(message.Channel, "Hello, "+message.User.DisplayName+"!")
@@ -231,22 +240,30 @@ func main() {
 		if strings.HasPrefix(message.Message, "!abc ") || strings.HasPrefix(message.Message, "!alpha ") {
 			log.Println("Detected !abc message")
 			commandText := strings.TrimPrefix(message.Message, "!abc ")
+			//TODO: Ensure there is a message after the !abc command to be alphabetized
 			client.Say(message.Channel, alphabetize(commandText))
 		}
 		// Command ideas:
-		// !randomize - Randomize the words from the message
+		// !randomize - Randomize the words from the given message.
+		// !lore - Print a random line from a text file containing deep conflabermits lore.
 		if message.Message == "!quote" || message.Message == "!randomquote" {
 			log.Println("Detected !quote message")
 			client.Say(message.Channel, "Random quote -- "+getQuote()+".. in bed.")
 		}
 		if strings.HasPrefix(message.Message, "!poll ") {
 			log.Println("Detected !poll message")
-			client.Say(message.Channel, "Creating a poll for you!")
-			pollText := strings.TrimPrefix(message.Message, "!poll ")
-			log.Println("pollText: " + pollText)
-			words := strings.Fields(pollText)
-			log.Println("words: " + words[0] + " " + words[1] + " " + words[2])
-			sendPoll(words[0], words[1], words[2])
+			// TODO: Add a `getPoll()` function here to check first and condition-out if there's a poll in progress.
+			if message.User.DisplayName != "conflabermits" {
+				client.Say(message.Channel, "Sorry, only accepting polls from conflabermits right now!")
+			} else {
+				client.Say(message.Channel, "Creating a poll for @"+message.User.DisplayName+"!")
+				pollText := strings.TrimPrefix(message.Message, "!poll ")
+				log.Println("pollText: " + pollText)
+				words := strings.Fields(pollText)
+				log.Println("words: " + words[0] + " " + words[1] + " " + words[2])
+				// TODO: Ensure `sendPoll()` is given the proper number of args.
+				sendPoll(words[0], words[1], words[2])
+			}
 		}
 	})
 
