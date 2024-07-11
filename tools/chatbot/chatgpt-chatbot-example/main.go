@@ -30,30 +30,119 @@ func getEnvVar(key string) string {
 	return value
 }
 
-type PollReqData struct {
+type PollPostData struct {
 	// Define your data structure here
-	BroadcasterId              string       `json:"broadcaster_id"`
-	PollTitle                  string       `json:"title"`
-	Choices                    []PollChoice `json:"choices"`
-	ChannelPointsVotingEnabled bool         `json:"channel_points_voting_enabled"`
-	ChannelPointsPerVote       int          `json:"channel_points_per_vote"`
-	Duration                   int          `json:"duration"`
+	BroadcasterId              string           `json:"broadcaster_id"`
+	PollTitle                  string           `json:"title"`
+	Choices                    []PollPostChoice `json:"choices"`
+	ChannelPointsVotingEnabled bool             `json:"channel_points_voting_enabled"`
+	ChannelPointsPerVote       int              `json:"channel_points_per_vote"`
+	Duration                   int              `json:"duration"`
 }
 
-type PollChoice struct {
+type PollPostChoice struct {
 	Title string `json:"title"`
 }
 
+type PollGetResponse struct {
+	Data []PollGetData `json:"data"`
+}
+
+type PollGetData struct {
+	ID                         string          `json:"id"`
+	BroadcasterID              string          `json:"broadcaster_id"`
+	BroadcasterName            string          `json:"broadcaster_name"`
+	BroadcasterLogin           string          `json:"broadcaster_login"`
+	Title                      string          `json:"title"`
+	Choices                    []PollGetChoice `json:"choices"`
+	ChannelPointsVotingEnabled bool            `json:"channel_points_voting_enabled"`
+	ChannelPointsPerVote       int             `json:"channel_points_per_vote"`
+	Status                     string          `json:"status"`
+	Duration                   int             `json:"duration"`
+	StartedAt                  string          `json:"started_at"`
+	EndedAt                    string          `json:"ended_at"`
+}
+
+type PollGetChoice struct {
+	ID                 string `json:"id"`
+	Title              string `json:"title"`
+	Votes              int    `json:"votes"`
+	ChannelPointsVotes int    `json:"channel_points_votes"`
+}
+
 // TODO: Add `getPoll()` function. Use it before sending poll to prevent failures and to share current poll data.
+
+func getPoll() string {
+	// Define your URL and data
+	url := "https://api.twitch.tv/helix/polls"
+
+	// Create a new GET request
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return "Error creating request"
+	}
+
+	// Set the headers
+	bearerToken := strings.Split(getEnvVar("twitchToken"), ":")[1]
+	req.Header.Set("Authorization", "Bearer "+bearerToken)
+	req.Header.Set("Client-Id", getEnvVar("clientId"))
+
+	// Set the query parameters
+	q := req.URL.Query()
+	q.Add("broadcaster_id", getEnvVar("broadcaster_id"))
+	q.Add("status", "ACTIVE")
+	req.URL.RawQuery = q.Encode()
+
+	// Send the request with a client
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return "Error sending request"
+	}
+	defer resp.Body.Close()
+
+	// Optionally, handle the response
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return "Error reading response body"
+	}
+
+	fmt.Println("Response status:", resp.StatusCode)
+
+	// Parse the JSON data into a Data struct
+	var jsonResponse PollGetResponse
+	err = json.Unmarshal(body, &jsonResponse)
+	if err != nil {
+		panic(err)
+	}
+
+	var recentPoll string
+
+	// Access the first element of the array
+	if len(jsonResponse.Data) > 0 {
+		firstValue := jsonResponse.Data[0]
+		recentPoll += "Latest poll data! //// Poll title: \"" + firstValue.Title + "\" //// Choices:"
+		for _, choice := range firstValue.Choices {
+			recentPoll += " // \"" + choice.Title + "\": " + fmt.Sprint(choice.Votes)
+		}
+	} else {
+		fmt.Println("Array is empty")
+	}
+
+	return recentPoll
+}
 
 func sendPoll(question string, choice1 string, choice2 string) {
 	// TODO: Allow for 2-5 choices, handle exit for number of args less than 2 or greater than 5.
 	// Define your URL and data
 	url := "https://api.twitch.tv/helix/polls"
-	data := PollReqData{
+	data := PollPostData{
 		BroadcasterId: getEnvVar("broadcaster_id"),
 		PollTitle:     question,
-		Choices: []PollChoice{
+		Choices: []PollPostChoice{
 			{Title: choice1},
 			{Title: choice2},
 		},
@@ -249,6 +338,10 @@ func main() {
 		if message.Message == "!quote" || message.Message == "!randomquote" {
 			log.Println("Detected !quote message")
 			client.Say(message.Channel, "Random quote -- "+getQuote()+".. in bed.")
+		}
+		if message.Message == "!poll" || message.Message == "!getpoll" {
+			log.Println("Detected !getpoll message")
+			client.Say(message.Channel, getPoll())
 		}
 		if strings.HasPrefix(message.Message, "!poll ") {
 			log.Println("Detected !poll message")
