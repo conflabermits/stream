@@ -70,7 +70,7 @@ type PollGetChoice struct {
 	ChannelPointsVotes int    `json:"channel_points_votes"`
 }
 
-// TODO: Add `getPoll()` function. Use it before sending poll to prevent failures and to share current poll data.
+// TODO: Add `isPollActive()` function. Use it before sending poll to prevent failures and to share current poll data.
 
 func getPoll() string {
 	// Define your URL and data
@@ -345,10 +345,11 @@ func main() {
 		}
 		if strings.HasPrefix(message.Message, "!poll ") {
 			log.Println("Detected !poll message")
-			// TODO: Add a `getPoll()` function here to check first and condition-out if there's a poll in progress.
+			// TODO: Add a `isPollActive()` function here to check first and condition-out if there's a poll in progress.
 			if message.User.DisplayName != "conflabermits" {
 				client.Say(message.Channel, "Sorry, only accepting polls from conflabermits right now!")
 			} else {
+				// TODO: Send all message text to `sendPoll()`, make it responsible for the below logic.
 				client.Say(message.Channel, "Creating a poll for @"+message.User.DisplayName+"!")
 				pollText := strings.TrimPrefix(message.Message, "!poll ")
 				log.Println("pollText: " + pollText)
