@@ -124,7 +124,9 @@ func getPoll() (PollGetResponse, error) {
 func getPollResults() string {
 	jsonResponse, err := getPoll()
 	if err != nil {
-		fmt.Println("Error getting poll with getPoll()", err)
+		errorMessage := "Error getting poll with getPoll()"
+		fmt.Println(errorMessage, err)
+		return errorMessage
 	}
 
 	var recentPoll string
@@ -137,7 +139,9 @@ func getPollResults() string {
 			recentPoll += " // \"" + choice.Title + "\": " + fmt.Sprint(choice.Votes)
 		}
 	} else {
-		fmt.Println("Array is empty")
+		emptyMessage := "Array is empty"
+		fmt.Println(emptyMessage)
+		return emptyMessage
 	}
 
 	return recentPoll
@@ -161,6 +165,7 @@ func isPollActive() bool {
 		}
 	} else {
 		fmt.Println("Array is empty")
+		isActive = false
 	}
 
 	return isActive
