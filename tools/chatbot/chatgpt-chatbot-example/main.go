@@ -70,9 +70,7 @@ type PollGetChoice struct {
 	ChannelPointsVotes int    `json:"channel_points_votes"`
 }
 
-// TODO: Add `isPollActive()` function. Use it before sending poll to prevent failures and to share current poll data.
-
-func getPoll() string {
+func getPoll() (PollGetResponse, error) {
 	// Define your URL and data
 	url := "https://api.twitch.tv/helix/polls"
 
@@ -80,7 +78,7 @@ func getPoll() string {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		fmt.Println("Error creating request:", err)
-		return "Error creating request"
+		return PollGetResponse{}, err
 	}
 
 	// Set the headers
@@ -99,7 +97,7 @@ func getPoll() string {
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("Error sending request:", err)
-		return "Error sending request"
+		return PollGetResponse{}, err
 	}
 	defer resp.Body.Close()
 
@@ -107,7 +105,7 @@ func getPoll() string {
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("Error reading response body:", err)
-		return "Error reading response body"
+		return PollGetResponse{}, err
 	}
 
 	fmt.Println("Response status:", resp.StatusCode)
@@ -116,7 +114,17 @@ func getPoll() string {
 	var jsonResponse PollGetResponse
 	err = json.Unmarshal(body, &jsonResponse)
 	if err != nil {
-		panic(err)
+		fmt.Println("Error parsing JSON data", err)
+		return PollGetResponse{}, err
+	}
+
+	return jsonResponse, nil
+}
+
+func getPollResults() string {
+	jsonResponse, err := getPoll()
+	if err != nil {
+		fmt.Println("Error getting poll with getPoll()", err)
 	}
 
 	var recentPoll string
@@ -133,6 +141,29 @@ func getPoll() string {
 	}
 
 	return recentPoll
+}
+
+func isPollActive() bool {
+	jsonResponse, err := getPoll()
+	if err != nil {
+		fmt.Println("Error getting poll with getPoll()", err)
+	}
+
+	var isActive bool
+
+	// Access the first element of the array
+	if len(jsonResponse.Data) > 0 {
+		firstValue := jsonResponse.Data[0]
+		if firstValue.Status == "ACTIVE" {
+			isActive = true
+		} else {
+			isActive = false
+		}
+	} else {
+		fmt.Println("Array is empty")
+	}
+
+	return isActive
 }
 
 func sendPoll(question string, choice1 string, choice2 string) {
@@ -339,15 +370,17 @@ func main() {
 			log.Println("Detected !quote message")
 			client.Say(message.Channel, "Random quote -- "+getQuote()+".. in bed.")
 		}
-		if message.Message == "!poll" || message.Message == "!getpoll" {
-			log.Println("Detected !getpoll message")
-			client.Say(message.Channel, getPoll())
+		if message.Message == "!poll" || message.Message == "!getPoll" || message.Message == "!getPollResults" {
+			log.Println("Detected !getPoll message")
+			client.Say(message.Channel, getPollResults())
 		}
 		if strings.HasPrefix(message.Message, "!poll ") {
 			log.Println("Detected !poll message")
 			// TODO: Add a `isPollActive()` function here to check first and condition-out if there's a poll in progress.
 			if message.User.DisplayName != "conflabermits" {
 				client.Say(message.Channel, "Sorry, only accepting polls from conflabermits right now!")
+			} else if isPollActive() {
+				client.Say(message.Channel, "Sorry, a poll is currently active, try again when it's done.")
 			} else {
 				// TODO: Send all message text to `sendPoll()`, make it responsible for the below logic.
 				client.Say(message.Channel, "Creating a poll for @"+message.User.DisplayName+"!")
