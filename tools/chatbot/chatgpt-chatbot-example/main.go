@@ -171,8 +171,17 @@ func isPollActive() bool {
 	return isActive
 }
 
-func sendPoll(question string, choice1 string, choice2 string) {
+func sendPoll(pollText string) {
 	// TODO: Allow for 2-5 choices, handle exit for number of args less than 2 or greater than 5.
+	log.Println("pollText: " + pollText)
+	words := strings.Fields(pollText)
+	if len(words) < 3 {
+		fmt.Println("Please ensure !poll was passed a question and at least two choices!")
+	}
+	question := words[0]
+	choice1 := words[1]
+	choice2 := words[2]
+
 	// Define your URL and data
 	url := "https://api.twitch.tv/helix/polls"
 	data := PollPostData{
@@ -381,25 +390,19 @@ func main() {
 		}
 		if strings.HasPrefix(message.Message, "!poll ") {
 			log.Println("Detected !poll message")
-			// TODO: Add a `isPollActive()` function here to check first and condition-out if there's a poll in progress.
 			if message.User.DisplayName != "conflabermits" {
 				client.Say(message.Channel, "Sorry, only accepting polls from conflabermits right now!")
 			} else if isPollActive() {
 				client.Say(message.Channel, "Sorry, a poll is currently active, try again when it's done.")
 			} else {
-				// TODO: Send all message text to `sendPoll()`, make it responsible for the below logic.
 				client.Say(message.Channel, "Creating a poll for @"+message.User.DisplayName+"!")
 				pollText := strings.TrimPrefix(message.Message, "!poll ")
-				log.Println("pollText: " + pollText)
-				words := strings.Fields(pollText)
-				log.Println("words: " + words[0] + " " + words[1] + " " + words[2])
-				// TODO: Ensure `sendPoll()` is given the proper number of args.
-				sendPoll(words[0], words[1], words[2])
+				sendPoll(pollText)
 			}
 		}
 	})
 
-	client.OnConnect(func() { client.Say(channel, "Let's GOOOOOO!") })
+	client.OnConnect(func() { client.Say(channel, "conflabermits chatbot started -- Let's GOOOOOO!") })
 
 	// Join the specified channel
 	client.Join(channel)
