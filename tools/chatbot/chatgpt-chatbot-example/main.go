@@ -177,20 +177,43 @@ func sendPoll(pollText string) {
 	words := strings.Fields(pollText)
 	if len(words) < 3 {
 		fmt.Println("Please ensure !poll was passed a question and at least two choices!")
+		return
 	}
-	question := words[0]
-	choice1 := words[1]
-	choice2 := words[2]
+
+	var question string
+	//var choice []PollPostChoice
+	choices := []PollPostChoice{}
+
+	for index, phrase := range strings.Split(pollText, "//") {
+		if index == 0 {
+			question := phrase
+			fmt.Println("Identified question as: ", question)
+		} else {
+			// Make a var of type PollPostChoice for each phrase, then add that to PollPostData.Choices
+			fmt.Printf("Identified choice %s as: %s\n", fmt.Sprint(index), phrase)
+			//var choice []PollPostChoice
+			//choice = append(choice, )
+			//choice = append([]PollPostChoice(choice), phrase)
+			choices = append(choices, PollPostChoice{Title: phrase})
+			//choices = append(choices, phrase)
+			//choice := []PollPostChoice{}
+
+		}
+	}
+
+	// Marshal the choices to JSON
+	/* jsonChoices, err := json.Marshal(choices)
+	if err != nil {
+		fmt.Println("Error marshalling choices JSON:", err)
+		return
+	} */
 
 	// Define your URL and data
 	url := "https://api.twitch.tv/helix/polls"
 	data := PollPostData{
-		BroadcasterId: getEnvVar("broadcaster_id"),
-		PollTitle:     question,
-		Choices: []PollPostChoice{
-			{Title: choice1},
-			{Title: choice2},
-		},
+		BroadcasterId:              getEnvVar("broadcaster_id"),
+		PollTitle:                  question,
+		Choices:                    choices,
 		ChannelPointsVotingEnabled: true,
 		ChannelPointsPerVote:       100,
 		Duration:                   60,
