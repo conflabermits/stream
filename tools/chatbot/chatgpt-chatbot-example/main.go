@@ -121,12 +121,12 @@ func getPoll() (PollGetResponse, error) {
 	return jsonResponse, nil
 }
 
-func getPollResults() string {
+func getPollResults() (string, error) {
 	jsonResponse, err := getPoll()
 	if err != nil {
 		errorMessage := "Error getting poll with getPoll()"
 		fmt.Println(errorMessage, err)
-		return errorMessage
+		return errorMessage, err
 	}
 
 	var recentPoll string
@@ -141,10 +141,10 @@ func getPollResults() string {
 	} else {
 		emptyMessage := "Array is empty"
 		fmt.Println(emptyMessage)
-		return emptyMessage
+		return emptyMessage, nil
 	}
 
-	return recentPoll
+	return recentPoll, nil
 }
 
 func isPollActive() bool {
@@ -396,7 +396,10 @@ func main() {
 		}
 		if message.Message == "!poll" || message.Message == "!getPoll" || message.Message == "!getPollResults" {
 			log.Println("Detected !getPoll message")
-			client.Say(message.Channel, getPollResults())
+			getPollResponse, err := getPollResults()
+			if err != nil {
+				client.Say(message.Channel, getPollResponse)
+			}
 		}
 		if strings.HasPrefix(message.Message, "!poll ") {
 			log.Println("Detected !poll message")
@@ -408,6 +411,8 @@ func main() {
 				client.Say(message.Channel, "Creating a poll for @"+message.User.DisplayName+"!")
 				pollText := strings.TrimPrefix(message.Message, "!poll ")
 				sendPoll(pollText)
+				// TODO: return status or error for printing to chat
+				//client.Say(message.Channel, getPollResults())
 			}
 		}
 	})
