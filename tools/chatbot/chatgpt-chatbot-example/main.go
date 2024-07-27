@@ -172,41 +172,28 @@ func isPollActive() bool {
 }
 
 func sendPoll(pollText string) {
-	// TODO: Allow for 2-5 choices, handle exit for number of args less than 2 or greater than 5.
 	log.Println("pollText: " + pollText)
-	words := strings.Fields(pollText)
-	if len(words) < 3 {
-		fmt.Println("Please ensure !poll was passed a question and at least two choices!")
+
+	if len(strings.Split(pollText, "//")) < 3 {
+		fmt.Println("Not enough choices")
+		return
+	} else if len(strings.Split(pollText, "//")) > 6 {
+		fmt.Println("Too many choices")
 		return
 	}
 
 	var question string
-	//var choice []PollPostChoice
 	choices := []PollPostChoice{}
 
 	for index, phrase := range strings.Split(pollText, "//") {
 		if index == 0 {
-			question := phrase
-			fmt.Println("Identified question as: ", question)
+			question = strings.TrimSpace(phrase)
+			fmt.Println("Identified question as:", question)
 		} else {
-			// Make a var of type PollPostChoice for each phrase, then add that to PollPostData.Choices
-			fmt.Printf("Identified choice %s as: %s\n", fmt.Sprint(index), phrase)
-			//var choice []PollPostChoice
-			//choice = append(choice, )
-			//choice = append([]PollPostChoice(choice), phrase)
-			choices = append(choices, PollPostChoice{Title: phrase})
-			//choices = append(choices, phrase)
-			//choice := []PollPostChoice{}
-
+			fmt.Printf("Identified choice %s as: %s\n", fmt.Sprint(index), strings.TrimSpace(phrase))
+			choices = append(choices, PollPostChoice{Title: strings.TrimSpace(phrase)})
 		}
 	}
-
-	// Marshal the choices to JSON
-	/* jsonChoices, err := json.Marshal(choices)
-	if err != nil {
-		fmt.Println("Error marshalling choices JSON:", err)
-		return
-	} */
 
 	// Define your URL and data
 	url := "https://api.twitch.tv/helix/polls"
