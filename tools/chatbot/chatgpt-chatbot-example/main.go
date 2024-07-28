@@ -174,16 +174,17 @@ func isPollActive() bool {
 func sendPoll(pollText string) {
 	log.Println("pollText: " + pollText)
 
-	if len(strings.Split(pollText, "//")) < 3 {
+	pollLength := len(strings.Split(pollText, "//"))
+	if pollLength < 3 {
 		fmt.Println("Not enough choices")
 		return
-	} else if len(strings.Split(pollText, "//")) > 6 {
+	} else if pollLength > 6 {
 		fmt.Println("Too many choices")
 		return
 	}
 
 	var question string
-	choices := []PollPostChoice{}
+	var choices []PollPostChoice = make([]PollPostChoice, 2, 5)
 
 	for index, phrase := range strings.Split(pollText, "//") {
 		if index == 0 {
