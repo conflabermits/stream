@@ -121,12 +121,12 @@ func getPoll() (PollGetResponse, error) {
 	return jsonResponse, nil
 }
 
-func getPollResults() (string, error) {
+func getPollResults() string {
 	jsonResponse, err := getPoll()
 	if err != nil {
 		errorMessage := "Error getting poll with getPoll()"
 		fmt.Println(errorMessage, err)
-		return errorMessage, err
+		return errorMessage
 	}
 
 	var recentPoll string
@@ -141,10 +141,10 @@ func getPollResults() (string, error) {
 	} else {
 		emptyMessage := "Array is empty"
 		fmt.Println(emptyMessage)
-		return emptyMessage, nil
+		return emptyMessage
 	}
 
-	return recentPoll, nil
+	return recentPoll
 }
 
 func isPollActive() bool {
@@ -171,16 +171,18 @@ func isPollActive() bool {
 	return isActive
 }
 
-func sendPoll(pollText string) {
+func sendPoll(pollText string) string {
 	log.Println("pollText: " + pollText)
 
 	pollLength := len(strings.Split(pollText, "//"))
 	if pollLength < 3 {
-		fmt.Println("Not enough choices")
-		return
+		errorMessage := "Not enough choices"
+		fmt.Println(errorMessage)
+		return errorMessage
 	} else if pollLength > 6 {
-		fmt.Println("Too many choices")
-		return
+		errorMessage := "Too many choices"
+		fmt.Println(errorMessage)
+		return errorMessage
 	}
 
 	var question string
@@ -210,15 +212,17 @@ func sendPoll(pollText string) {
 	// Marshal the data to JSON
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		fmt.Println("Error marshalling JSON:", err)
-		return
+		errorMessage := "Error marshalling JSON"
+		fmt.Println(errorMessage, err)
+		return errorMessage
 	}
 
 	// Create a new POST request
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		fmt.Println("Error creating request:", err)
-		return
+		errorMessage := "Error creating request"
+		fmt.Println(errorMessage, err)
+		return errorMessage
 	}
 
 	// Set the headers
@@ -233,20 +237,24 @@ func sendPoll(pollText string) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error sending request:", err)
-		return
+		errorMessage := "Error sending request"
+		fmt.Println(errorMessage, err)
+		return errorMessage
 	}
 	defer resp.Body.Close()
 
 	// Optionally, handle the response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body:", err)
-		return
+		errorMessage := "Error reading response body"
+		fmt.Println(errorMessage, err)
+		return errorMessage
 	}
 
 	fmt.Println("Response status:", resp.StatusCode)
 	fmt.Println("Response body:", string(body))
+
+	return "Poll created successfully"
 }
 
 // Borrowed code for better alphabetizer, case insensitive!
@@ -397,10 +405,7 @@ func main() {
 		}
 		if message.Message == "!poll" || message.Message == "!getPoll" || message.Message == "!getPollResults" {
 			log.Println("Detected !getPoll message")
-			getPollResponse, err := getPollResults()
-			if err != nil {
-				client.Say(message.Channel, getPollResponse)
-			}
+			client.Say(message.Channel, getPollResults())
 		}
 		if strings.HasPrefix(message.Message, "!poll ") {
 			log.Println("Detected !poll message")
@@ -411,9 +416,7 @@ func main() {
 			} else {
 				client.Say(message.Channel, "Creating a poll for @"+message.User.DisplayName+"!")
 				pollText := strings.TrimPrefix(message.Message, "!poll ")
-				sendPoll(pollText)
-				// TODO: return status or error for printing to chat
-				//client.Say(message.Channel, getPollResults())
+				client.Say(message.Channel, sendPoll(pollText))
 			}
 		}
 	})
