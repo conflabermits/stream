@@ -421,7 +421,9 @@ func main() {
 		}
 	})
 
-	client.OnConnect(func() { client.Say(channel, "conflabermits chatbot started -- Let's GOOOOOO!") })
+	client.OnConnect(func() {
+		client.Say(channel, "conflabermits chatbot started -- Let's GOOOOOO! confla3Nyan confla3Shake confla3Party confla3Spin")
+	})
 
 	// Join the specified channel
 	client.Join(channel)
