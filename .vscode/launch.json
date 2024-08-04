@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Go: Launch file",
+            "name": "Go: Launch file (Mac)",
             "type": "go",
             "request": "launch",
             "mode": "debug",
@@ -10,8 +10,16 @@
             "program": "${file}"
         },
         {
+            "name": "Go: Launch file (Win)",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "envFile": "/local/git/stream/tools/chatbot/.creds",
+            "program": "${file}"
+        },
+        {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
