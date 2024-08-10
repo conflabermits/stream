@@ -175,6 +175,7 @@ func sendPoll(pollText string) string {
 	log.Println("pollText: " + pollText)
 
 	pollLength := len(strings.Split(pollText, "//"))
+	log.Println("pollLength:", pollLength)
 	if pollLength < 3 {
 		errorMessage := "Not enough choices"
 		fmt.Println(errorMessage)
@@ -186,7 +187,7 @@ func sendPoll(pollText string) string {
 	}
 
 	var question string
-	var choices []PollPostChoice = make([]PollPostChoice, 2, 5)
+	choices := []PollPostChoice{}
 
 	for index, phrase := range strings.Split(pollText, "//") {
 		if index == 0 {
@@ -254,7 +255,12 @@ func sendPoll(pollText string) string {
 	fmt.Println("Response status:", resp.StatusCode)
 	fmt.Println("Response body:", string(body))
 
-	return "Poll created successfully"
+	if resp.StatusCode != 200 {
+		return "Error creating poll"
+	} else {
+		return "Poll created successfully"
+	}
+
 }
 
 // Borrowed code for better alphabetizer, case insensitive!
@@ -414,7 +420,7 @@ func main() {
 			} else if message.User.DisplayName != "conflabermits" {
 				client.Say(message.Channel, "Sorry, only accepting polls from conflabermits right now!")
 			} else {
-				client.Say(message.Channel, "Creating a poll for @"+message.User.DisplayName+"!")
+				client.Say(message.Channel, "Attempting to create a poll for @"+message.User.DisplayName+"...")
 				pollText := strings.TrimPrefix(message.Message, "!poll ")
 				client.Say(message.Channel, sendPoll(pollText))
 			}
