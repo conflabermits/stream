@@ -4,20 +4,22 @@ import (
 	"testing"
 )
 
-func TestAlphabetize(t *testing.T) {
-	// Test case 1: Alphabetize the words in a short string
-	input1 := "Delta Iota Eta Epsilon Alpha zeta gamma beta theta"
-	expected1 := "Alpha beta Delta Epsilon Eta gamma Iota theta zeta"
-	output1 := alphabetize(input1)
-	if output1 != expected1 {
-		t.Errorf("Expected:\n%q\n\nGot:\n%q", expected1, output1)
+func TestAlphabetizeShort(t *testing.T) {
+	// Alphabetize the words in a short string
+	input := "Delta Iota Eta Epsilon Alpha zeta gamma beta theta"
+	expected := "Alpha beta Delta Epsilon Eta gamma Iota theta zeta"
+	output := alphabetize(input)
+	if output != expected {
+		t.Errorf("Expected:\n%q\n\nGot:\n%q", expected, output)
 	}
+}
 
-	// Test case 2: Alphabetize the words in a longer quote
-	input2 := "Random quote -- Knowing your own darkness is the best method for dealing with the darknesses of other people... in bed."
-	expected2 := "-- bed. best darkness darknesses dealing for in is Knowing method of other own people... quote Random the the with your"
-	output2 := alphabetize(input2)
-	if output2 != expected2 {
-		t.Errorf("Expected:\n%q\n\nGot:\n%q", expected2, output2)
+func TestAlphabetizeLong(t *testing.T) {
+	// Alphabetize the words in a longer quote
+	input := "Random quote -- Knowing your own darkness is the best method for dealing with the darknesses of other people... in bed."
+	expected := "-- bed. best darkness darknesses dealing for in is Knowing method of other own people... quote Random the the with your"
+	output := alphabetize(input)
+	if output != expected {
+		t.Errorf("Expected:\n%q\n\nGot:\n%q", expected, output)
 	}
 }
