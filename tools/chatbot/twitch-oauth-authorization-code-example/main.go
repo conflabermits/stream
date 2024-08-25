@@ -103,7 +103,9 @@ func HandleOAuth2Callback(w http.ResponseWriter, r *http.Request) (err error) {
 	// ensure we flush the csrf challenge even if the request is ultimately unsuccessful
 	defer func() {
 		if err := session.Save(r, w); err != nil {
-			log.Printf("error saving session: %s", err)
+			log.Printf("error saving session: %s\n", err)
+		} else {
+			log.Println("session saved via defer func")
 		}
 	}()
 
@@ -112,6 +114,13 @@ func HandleOAuth2Callback(w http.ResponseWriter, r *http.Request) (err error) {
 		err = errors.New("missing state challenge")
 	case state != stateChallenge[0]:
 		err = fmt.Errorf("invalid oauth state, expected '%s', got '%s'\n", state, stateChallenge[0])
+		if len(stateChallenge) > 1 {
+			log.Printf("multiple state challenges present: %v total\n", stateChallenge)
+			for i, v := range stateChallenge {
+				log.Printf("state challenge %d: %s\n", i, v)
+			}
+			log.Printf("state from request: %s\n", state)
+		}
 	}
 
 	if err != nil {
