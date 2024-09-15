@@ -16,6 +16,7 @@ package main
 import (
 	"context"
 	"crypto/rand"
+	"encoding/base64"
 	"encoding/gob"
 	"encoding/hex"
 	"errors"
@@ -41,7 +42,10 @@ var (
 	scopes       = []string{"chat:read", "chat:edit", "channel:manage:polls"}
 	redirectURL  = "http://localhost:8080/redirect"
 	oauth2Config *oauth2.Config
-	cookieSecret = []byte(getEnvVar("cookieSecret"))
+	//cookieSecret = []byte(getEnvVar("cookieSecret"))
+	// Generate a random cookieSecret on each run
+	randomString = generateRandomString(27)
+	cookieSecret = []byte(randomString)
 	cookieStore  = sessions.NewCookieStore(cookieSecret)
 )
 
@@ -52,6 +56,22 @@ func getEnvVar(key string) string {
 		os.Exit(1)
 	}
 	return value
+}
+
+func generateRandomString(length int) string {
+	// Calculate the number of bytes needed for the desired string length
+	bytes := make([]byte, (length + 1)) // +1 to handle odd lengths
+
+	// Read random bytes from the crypto/rand source
+	if _, err := rand.Read(bytes); err != nil {
+		log.Println("Error generating the random string")
+		return "ThisIsNotAGoodCookieSecret"
+	}
+
+	// Encode the bytes to a base64 string
+	encoded := base64.StdEncoding.EncodeToString(bytes)
+
+	return encoded[:length]
 }
 
 // HandleRoot is a Handler that shows a login button. In production, if the frontend is served / generated
