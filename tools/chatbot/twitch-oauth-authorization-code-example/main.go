@@ -42,10 +42,8 @@ var (
 	scopes       = []string{"chat:read", "chat:edit", "channel:manage:polls"}
 	redirectURL  = "http://localhost:8080/redirect"
 	oauth2Config *oauth2.Config
-	//cookieSecret = []byte(getEnvVar("cookieSecret"))
 	// Generate a random cookieSecret on each run
-	randomString = generateRandomString(27)
-	cookieSecret = []byte(randomString)
+	cookieSecret = []byte(generateRandomString(27))
 	cookieStore  = sessions.NewCookieStore(cookieSecret)
 )
 
