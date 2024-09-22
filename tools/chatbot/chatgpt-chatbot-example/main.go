@@ -417,8 +417,8 @@ func main() {
 			log.Println("Detected !poll message")
 			if isPollActive() {
 				client.Say(message.Channel, "Sorry, a poll is currently active, try again when it's done.")
-			} else if message.User.DisplayName != "conflabermits" {
-				client.Say(message.Channel, "Sorry, only accepting polls from conflabermits right now!")
+				//} else if message.User.DisplayName != "conflabermits" {
+				//	client.Say(message.Channel, "Sorry, only accepting polls from conflabermits right now!")
 			} else {
 				client.Say(message.Channel, "Attempting to create a poll for @"+message.User.DisplayName+"...")
 				pollText := strings.TrimPrefix(message.Message, "!poll ")
