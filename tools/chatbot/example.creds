@@ -1,6 +1,6 @@
-broadcaster_id=123456789
+twitchToken=oauth:abc123def456ghi789jkl012m
+twitchChannel=conflabermits
+twitchUsername=conflabermits
 clientId=0123456789abcdefghijklmnopqrst
 clientSecret=abcdefghijklmnopqrstuvwxyz0123
-twitchUsername=conflabermits
-twitchChannel=conflabermits
-twitchToken=oauth:abc123def456ghi789jkl012m
+broadcaster_id=123456789
