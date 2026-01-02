@@ -11,7 +11,12 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
 * Pokemon lister
 * Database webservice
 * Go + GraphQL backend service
-* Twitch Chat Bot
+* Twitch Chat Bot (started [here](https://github.com/conflabermits/stream-chatbot/))
+    * Add "gang" features:
+        * `!joingang` to align yourself with a "gang" (e.g., "tea gang" or "coffee gang").
+        * `!changegang` to change between them, and `!leavegang` to leave them.
+        * Writing username, user ID, and gang choice to a database.
+        * `!listgangs` to list potential gangs and maybe members too.
 
 ## Chrome Browser Plugin Notes/Resources
 
