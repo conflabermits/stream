@@ -17,6 +17,8 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
         * `!changegang` to change between them, and `!leavegang` to leave them.
         * Writing username, user ID, and gang choice to a database.
         * `!listgangs` to list potential gangs and maybe members too.
+    * Add "grandma" features:
+        * Using a list of pre-coded curse words and pre-coded phrases, respond to users cursing (or cursing too often) with a grandma-like reminder about language.
 
 ## Chrome Browser Plugin Notes/Resources
 
