@@ -19,6 +19,10 @@ This might not be terribly relevant to anyone else, but I needed a place to stor
         * `!listgangs` to list potential gangs and maybe members too.
     * Add "grandma" features:
         * Using a list of pre-coded curse words and pre-coded phrases, respond to users cursing (or cursing too often) with a grandma-like reminder about language.
+* Make a "[Flower Game](https://www.destinypedia.com/Flower_game)" game and release it on Switch (digital download) and GBA (ROM).
+    * Start by choosing your character (Gardener, Winnower, or Paracausal).
+    * Choose a stage, likely a pre-configured stage or, stretch goal, a custom-built stage.
+    * Start the game, and as your character take actions to enact your goals.
 
 ## Chrome Browser Plugin Notes/Resources
 
